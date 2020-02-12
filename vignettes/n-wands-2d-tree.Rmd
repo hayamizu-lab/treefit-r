@@ -1,0 +1,56 @@
+---
+title: N wands 2D tree
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{N wands 2D tree}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+library(treefit)
+library(ggplot2)
+library(gridExtra)
+```
+
+```{r}
+for (n_wands in c(3, 4, 5)) {
+  all_estimated <- data.frame()
+  for (fatness in c(0.1, 0.2, 0.3, 0.4, 0.5, 0.75)) {
+    tree <- generate_n_wands_2d_tree_expression(500, n_wands, fatness)
+    original_graph <-
+      ggplot(as.data.frame(tree),
+             aes(V1, V2)) +
+      geom_point(size=0.1) +
+      coord_cartesian(xlim=c(-2, 2), ylim=c(-2, 2)) +
+      labs(title=paste("N wands:", n_wands,
+                       "fatness:", fatness))
+    perturbated_graph <-
+      ggplot(as.data.frame(perturbate_knn(tree)),
+             aes(V1, V2)) +
+      geom_point(size=0.1) +
+      coord_cartesian(xlim=c(-2, 2), ylim=c(-2, 2)) +
+      labs(title=paste("N wands:", n_wands,
+                       "fatness:", fatness,
+                       "(perturbated)"))
+    estimated <- estimate(list(expression=tree))
+    estimated_graph <-
+      plot_estimated(estimated) +
+      labs(title=paste("N wands:", n_wands,
+                       "fatness:", fatness,
+                       "(Grassmann distance)"))
+    all_estimated <-
+      rbind(all_estimated,
+            cbind(estimated,
+                  fatness=fatness))
+    plot(grid.arrange(original_graph, perturbated_graph,
+                      estimated_graph,
+                      layout_matrix=rbind(c(1, 2),
+                                          c(3, 3))))
+  }
+  plot(plot_estimated(all_estimated) +
+         facet_wrap(vars(fatness)) +
+         labs(title=paste("N wands:", n_wands,
+                          "(Grassman distance for each K)")))
+}
+```

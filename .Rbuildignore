@@ -1,0 +1,5 @@
+\.dir-locals.el
+\.git
+\.github
+^Meta$
+^doc$

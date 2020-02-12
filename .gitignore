@@ -1,0 +1,9 @@
+.Rhistory
+/*.Rcheck
+/*.tar.gz
+/..Rcheck
+/.RData
+/Meta
+/R/.Rhistory
+/doc
+/man

@@ -1,0 +1,39 @@
+name: Check
+on:
+  - push
+  - pull_request
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos
+          - ubuntu
+          - windows
+        R:
+          - "3.6.3"
+          - "3.5.3"
+    name: R ${{ matrix.R }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: r-lib/actions/setup-r@master
+        with:
+          r-version: ${{ matrix.R}}
+      - name: Install system packages
+        if: |
+          matrix.os == 'ubuntu'
+        run: |
+          sudo apt update
+          sudo apt install -V -y \
+            libcurl4-openssl-dev \
+            pandoc-citeproc \
+            qpdf
+      - name: Install dependencies
+        run: |
+          Rscript -e "install.packages(c('devtools'))"
+          Rscript -e "devtools::install_deps(dependencies=TRUE)"
+      - name: Check
+        run: |
+          Rscript -e "devtools::check()"

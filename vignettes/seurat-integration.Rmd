@@ -1,0 +1,88 @@
+---
+title: Seurat integration
+vignette: >
+  %\VignetteIndexEntry{Seurat integration}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  rmarkdown::html_vignette:
+    fig_width: 7
+    fig_height: 7
+---
+
+このドキュメントではTreefitとSeuratを一緒に使う方法を紹介します。Treefitの結果の精度向上のために入力データの前処理（たとえば不要なデータの除去）をする必要があります。データの前処理にSeuratを活用すると便利です。
+
+関連ライブラリーを読み込みます。
+
+```{r}
+library(treefit)
+library(Seurat)
+```
+
+ここではTreefitの処理対象のデータとして[Trapnell 2014](https://www.nature.com/articles/nbt.2859)のデータを使います。Trapnellのデータは生物学的にbifurcation（二股の木）になっていると考えられており、Treefitの結果「tree-like」と判定されるべきデータです。
+
+データは[dynverse](https://dynverse.org/)が提供しているものをダウンロードして読み込みます。詳細は https://zenodo.org/record/1443566 を参照してください。
+
+```{r}
+download.file("https://zenodo.org/record/1443566/files/real/gold/myoblast-differentiation_trapnell.rds?download=1",
+              "myoblast-differentiation_trapnell.rds")
+trapnell.dynverse <- readRDS("myoblast-differentiation_trapnell.rds")
+```
+
+それではこのデータをSeuratで前処理します。
+
+Seuratで前処理するためにはSeurat objectを作る必要があります。dynverseのデータからSeurat objectを作るときは行・列が逆なので転置が必要なことに注意してください。dynverseのデータは行が細胞で列が遺伝子です。Seurat objectは行が遺伝子で列が細胞です。
+
+Seurat objectを作るときにパラメーターを指定すると前処理できます。ここでは次の前処理をします。
+
+  * 発現している細胞の数が3未満の遺伝子を除去
+  * 発現している遺伝子の数が200未満の細胞を除去
+
+```{r}
+trapnell <- Seurat::CreateSeuratObject(counts=t(trapnell.dynverse$count),
+                                       min.cells=3,
+                                       min.features=200)
+```
+
+Seuratで前処理したデータのtree-likenessを計算します。
+
+`treefit::estimate()`を使うと指定したデータのtree-likenessを推測した結果を返します。結果は次のような`data.frame`です。
+
+```{r}
+estimated <- treefit::estimate(trapnell)
+estimated
+```
+
+注目するべき点は次の2点です。
+
+  * `method`カラムの値が`max`のとき（以後、`max`メソッドと呼びます）の`mean`カラムの値がどこまで小さくなるか
+  * `method`カラムの値が`mean`のとき（以後、`mean`メソッドと呼びます）の`mean`カラムの値に「谷」が現れたときの`k`カラムの値
+
+`max`メソッドの`mean`カラムの値が小さいほどtree-likeです。
+
+`mean`メソッドの`mean`カラムの値の「谷」とは周辺の値に比べて急激に値が小さくなっている点のことです。「谷」になっているときの`k`カラムの値が木の分岐数を示す傾向があることがわかっています。たとえば、`k`カラムが2のときに「谷」になっているときは木の分岐数が2の可能性が高いことを示しています。
+
+これらの値は可視化すると確認しやすいです。推測したtree-likenessは`treefit::plot_estimated()`で可視化できます。
+
+```{r}
+treefit::plot_estimated(estimated)
+```
+
+可視化結果を確認してみましょう。
+
+`max`メソッドの`mean`カラムの値がどのくらいかを確認しましょう。0.1くらいです。0.1がどのくらいtree-likeかを示しているかというと、おそらくtree-likeだろうくらいです。0.01くらいになるとほぼtree-likeだろうくらいになることがわかっています。このデータはtree-likeだということがわかっているデータなので、その特徴を捉えています。
+
+`mean`メソッドのの`mean`カラムの値に「谷」があるか確認しましょう。`k`カラムの値が2のときに「谷」があります。つまり、2分岐の木である可能性が高いことを示しています。
+
+確認のためにデータがどのようなtreeか確認してみましょう。データをPCAで次元削減し、可視化してみます。
+
+```{r}
+trapnell <- Seurat::FindVariableFeatures(trapnell, verbose=FALSE)
+trapnell <- Seurat::ScaleData(trapnell, verbose=FALSE)
+trapnell <- Seurat::RunPCA(trapnell, verbose=FALSE)
+plot(Seurat::Embeddings(trapnell))
+```
+
+枝の先の方の点がまばらですが、2分岐の木のように見えますね。`mean`メソッドの`method`カラムの「谷」で示された分岐数は当たっていますね。
+
+枝の先の方の点がまばらなので`max`メソッドの`mean`カラムの値が下がりきらなかったのでしょう。tree-likenessの推測も当たっていますね。
