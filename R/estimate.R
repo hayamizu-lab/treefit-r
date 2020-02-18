@@ -390,21 +390,21 @@ estimate <- function(target,
                                                    build_tree,
                                                    max_k + 1,
                                                    verbose)
-  target_methods <- c(
+  target_grassman_distances <- c(
     "max",
     "mean"
   )
   ks <- c()
-  methods <- c()
+  grassman_distances <- c()
   means <- c()
   standard_deviations <- c()
   for (k in 2:(max_k + 1)) {
     eigenvectors_pairs <- utils::combn(1:length(eigenvectors_list), 2)
     n_eigenvectors_pairs <- ncol(eigenvectors_pairs)
-    for (target_method in target_methods) {
-      calculate <- get(paste("calculate_grassman_", target_method, sep=""))
+    for (target_grassman_distance in target_grassman_distances) {
+      calculate <- get(paste0("calculate_grassman_", target_grassman_distance))
       ks <- c(ks, k - 1)
-      methods <- c(methods, target_method)
+      grassman_distances <- c(grassman_distances, target_grassman_distance)
       values <- c()
       for (i in 1:n_eigenvectors_pairs) {
         u <- eigenvectors_list[[eigenvectors_pairs[1, i]]][, 2:k]
@@ -417,7 +417,7 @@ estimate <- function(target,
     }
   }
   data.frame(k=ks,
-             method=methods,
+             grassman_distance=grassman_distances,
              mean=means,
              standard_deviation=standard_deviations)
 }
@@ -429,11 +429,14 @@ estimate <- function(target,
 #' @export
 plot_estimated <- function(estimated) {
   ggplot2::ggplot(estimated) +
-    ggplot2::geom_line(ggplot2::aes(k, mean, group=method, color=method)) +
+    ggplot2::geom_line(ggplot2::aes(k,
+                                    mean,
+                                    group=grassman_distance,
+                                    color=grassman_distance)) +
     ggplot2::geom_pointrange(ggplot2::aes(k,
                                           mean,
-                                          group=method,
-                                          color=method,
+                                          group=grassman_distance,
+                                          color=grassman_distance,
                                           ymin=mean - standard_deviation,
                                           ymax=mean + standard_deviation),
                              shape=1) +
