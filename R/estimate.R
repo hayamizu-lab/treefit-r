@@ -1,3 +1,5 @@
+#' This is an API for advanced users. This API may be changed.
+#'
 #' Generate perturbated counts from the original counts by the Poisson
 #' distribution.
 #'
@@ -29,6 +31,8 @@ calculate_distance_matrix <- function(expression) {
   stats::dist(expression, method="euclidean")
 }
 
+#' This is an API for advanced users. This API may be changed.
+#'
 #' Generate perturbated expression from the original expression based
 #' on k-NN (k-nearest neighbor) data.
 #'

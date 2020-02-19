@@ -10,7 +10,9 @@ Authors@R: c(
   )
 Description: Quantitative analysis software for trajectory inference
 License: GPL (>= 3) | file LICENSE
-URL: https://github.com/hayamizu-lab/treefit-r/
+URL:
+    https://hayamizu-lab.github.io/treefit-r/,
+    https://github.com/hayamizu-lab/treefit-r/
 BugReports: https://github.com/hayamizu-lab/treefit-r/issues
 Encoding: UTF-8
 LazyData: true

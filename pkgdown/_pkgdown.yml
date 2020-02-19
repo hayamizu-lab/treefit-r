@@ -1,0 +1,11 @@
+url: https://hayamizu-lab.github.io/treefit-r/
+
+title: Treefit for R
+
+home:
+  title: Treefit for R - Quantitative analysis software for trajectory inference
+  links:
+    - text: <b>Treefit</b> details
+      href: https://hayamizu-lab.github.io/treefit/
+    - text: Treefit for Python
+      href: https://hayamizu-lab.github.io/treefit-python/
