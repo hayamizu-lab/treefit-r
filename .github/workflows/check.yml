@@ -14,9 +14,9 @@ jobs:
         R:
           - "3.6"
           - "3.5"
-      exclude:
-        - os: macos
-          R: "3.5"
+        exclude:
+          - os: macos
+            R: "3.5"
     name: R ${{ matrix.R }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
     steps:
