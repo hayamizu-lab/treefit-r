@@ -286,10 +286,10 @@ calculate_eigenvectors_list <- function(original,
           expression <- Seurat::GetAssayData(original, "data", assay_name)
           expression <- t(as.matrix(expression))
           original <-
-            SetAssayData(original,
-                         "data",
-                         t(perturbate_knn(expression, knn_strength)),
-                         assay_name)
+            Seurat::SetAssayData(original,
+                                 "data",
+                                 t(perturbate_knn(expression, knn_strength)),
+                                 assay_name)
         }
       } else {
         targets <- lapply(targets,
