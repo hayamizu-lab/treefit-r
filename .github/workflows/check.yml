@@ -13,7 +13,9 @@ jobs:
           - windows
         R:
           - "3.6"
-          # - "3.5"
+          - "3.5"
+    if: |
+      !(matrix.os == 'macos' && matrix.R == '3.5')
     name: R ${{ matrix.R }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
     steps:
