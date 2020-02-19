@@ -12,20 +12,14 @@ output:
 
 このドキュメントではTreefitとSeuratを一緒に使う方法を紹介します。Treefitの結果の精度向上のために入力データの前処理（たとえば不要なデータの除去）をする必要があります。データの前処理にSeuratを活用すると便利です。
 
-関連ライブラリーを読み込みます。
-
-```{r}
-library(treefit)
-library(Seurat)
-```
-
 ここではTreefitの処理対象のデータとして[Trapnell 2014](https://www.nature.com/articles/nbt.2859)のデータを使います。Trapnellのデータは生物学的にbifurcation（二股の木）になっていると考えられており、Treefitの結果「tree-like」と判定されるべきデータです。
 
 データは[dynverse](https://dynverse.org/)が提供しているものをダウンロードして読み込みます。詳細は https://zenodo.org/record/1443566 を参照してください。
 
 ```{r}
 download.file("https://zenodo.org/record/1443566/files/real/gold/myoblast-differentiation_trapnell.rds?download=1",
-              "myoblast-differentiation_trapnell.rds")
+              "myoblast-differentiation_trapnell.rds",
+              mode="wb")
 trapnell.dynverse <- readRDS("myoblast-differentiation_trapnell.rds")
 ```
 
