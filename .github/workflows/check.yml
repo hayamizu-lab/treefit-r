@@ -44,7 +44,7 @@ jobs:
         if: |
           matrix.R == '3.5'
         run: |
-          Rscript -e "devtools::install_version('caTools', version='1.17.1.4')"
+          Rscript -e "devtools::install_version('caTools', version='1.17.1.4', repos='https://cloud.r-project.org')"
       - name: Install dependencies
         run: |
           Rscript -e "devtools::install_deps(dependencies=TRUE)"
