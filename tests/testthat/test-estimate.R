@@ -38,13 +38,13 @@ test_that("perturbate_knn", {
   diff_means <- lapply(diffs, mean)
   diff_variances <- lapply(diffs, var)
   expect_equal(diff_means > min_diff_mean,
-               rep(TRUE, n_perturbated_expression))
+               rep(TRUE, n_perturbations))
   expect_equal(diff_means < max_diff_mean,
-               rep(TRUE, n_perturbated_expression))
+               rep(TRUE, n_perturbations))
   expect_equal(diff_variances > min_diff_variance,
-               rep(TRUE, n_perturbated_expression))
+               rep(TRUE, n_perturbations))
   expect_equal(diff_variances < max_diff_variance,
-               rep(TRUE, n_perturbated_expression))
+               rep(TRUE, n_perturbations))
 })
 
 test_that("calculate_mst", {
