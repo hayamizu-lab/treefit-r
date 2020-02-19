@@ -12,15 +12,15 @@ jobs:
           - ubuntu
           - windows
         R:
-          - "3.6.3"
-          - "3.5.3"
+          - "3.6"
+          - "3.5"
     name: R ${{ matrix.R }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
     steps:
       - uses: actions/checkout@master
-      - uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-r@v1
         with:
-          r-version: ${{ matrix.R}}
+          r-version: ${{ matrix.R }}
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
