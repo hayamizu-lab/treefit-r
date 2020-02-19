@@ -32,17 +32,17 @@ jobs:
             qpdf
       - name: Install devtools
         run: |
-          Rscript -e "install.packages(c('devtools'))"
+          sudo Rscript -e "install.packages(c('devtools'))"
       - name: Install BiocManager
         run: |
-          Rscript -e "install.packages(c('BiocManager'))"
-          Rscript -e "BiocManager::install()"
+          sudo Rscript -e "install.packages(c('BiocManager'))"
+          sudo Rscript -e "BiocManager::install()"
       - name: Install multtest separately
         run: |
-          Rscript -e "BiocManager::install(c('multtest'))"
+          sudo Rscript -e "BiocManager::install(c('multtest'))"
       - name: Install dependencies
         run: |
-          Rscript -e "devtools::install_deps(dependencies=TRUE)"
+          sudo Rscript -e "devtools::install_deps(dependencies=TRUE)"
       - name: Check
         run: |
           Rscript -e "devtools::check()"
