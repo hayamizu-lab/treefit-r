@@ -73,9 +73,9 @@ calculate_low_dimension_laplacian_eigenvectors <- function(mst, k) {
   e <- eigen(igraph::laplacian_matrix(mst))
   n_target_vectors <- nrow(e$vectors)
   ## Remove zero eigenvalues
-  ## while (n_target_vectors > 0 && all.equal(e$values[n_target_vectors], 0) == TRUE) {
-  ##   n_target_vectors <- n_target_vectors - 1
-  ## }
+  while (n_target_vectors > 0 && all.equal(e$values[n_target_vectors], 0) == TRUE) {
+    n_target_vectors <- n_target_vectors - 1
+  }
   low_dimension_values <-
     e$values[n_target_vectors:(n_target_vectors - k + 1)]
   low_dimension_vectors <-
@@ -388,7 +388,7 @@ estimate <- function(target,
                                                    normalize,
                                                    reduce_dimension,
                                                    build_tree,
-                                                   max_k + 1,
+                                                   max_k,
                                                    verbose)
   target_grassman_distances <- c(
     "max",
@@ -398,17 +398,17 @@ estimate <- function(target,
   grassman_distances <- c()
   means <- c()
   standard_deviations <- c()
-  for (k in 2:(max_k + 1)) {
+  for (k in 1:max_k) {
     eigenvectors_pairs <- utils::combn(1:length(eigenvectors_list), 2)
     n_eigenvectors_pairs <- ncol(eigenvectors_pairs)
     for (target_grassman_distance in target_grassman_distances) {
       calculate <- get(paste0("calculate_grassman_", target_grassman_distance))
-      ks <- c(ks, k - 1)
+      ks <- c(ks, k)
       grassman_distances <- c(grassman_distances, target_grassman_distance)
       values <- c()
       for (i in 1:n_eigenvectors_pairs) {
-        u <- eigenvectors_list[[eigenvectors_pairs[1, i]]][, 2:k]
-        v <- eigenvectors_list[[eigenvectors_pairs[2, i]]][, 2:k]
+        u <- eigenvectors_list[[eigenvectors_pairs[1, i]]][, 1:k]
+        v <- eigenvectors_list[[eigenvectors_pairs[2, i]]][, 1:k]
         canonical_correlation <- calculate_canonical_correlation(u, v)
         values <- c(values, calculate(canonical_correlation))
       }
