@@ -48,6 +48,11 @@ jobs:
       - name: Install dependencies
         run: |
           Rscript -e "devtools::install_deps(dependencies=TRUE)"
+      - name: Test
+        run: |
+          Rscript -e "devtools::test()"
       - name: Check
+        if: |
+          matrix.os != 'windows'
         run: |
           Rscript -e "devtools::check()"
