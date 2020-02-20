@@ -117,7 +117,7 @@ calculate_grassmann_distance_mean <- function(canonical_correlation) {
 }
 
 is_seurat <- function(object) {
-  is(object, "Seurat")
+  methods::is(object, "Seurat")
 }
 
 do_normalize <- function(original, target, normalize, verbose) {
