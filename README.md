@@ -36,4 +36,7 @@ estimated <- treefit::estimate(YOUR_SINGLE_CELL_GENE_EXPRESSION_DATA)
 treefit::plot_estimated(estimated)
 ```
 
-See vignettes for more details.
+See the following vignettes for more details:
+
+  * `vignette("treefit")`
+  * `vignette("seurat-integration")`

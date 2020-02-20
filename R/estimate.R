@@ -1,7 +1,9 @@
-#' This is an API for advanced users. This API may be changed.
+#' Generate perturbated counts by the Poisson distribution
 #'
-#' Generate perturbated counts from the original counts by the Poisson
-#' distribution.
+#' @description Generate perturbated counts from the original counts
+#'   by the Poisson distribution.
+#'
+#' @note This is an API for advanced users. This API may be changed.
 #'
 #' @param counts The original counts Rows are samples. Columns are
 #'   features. Values are count of features.
@@ -31,10 +33,12 @@ calculate_distance_matrix <- function(expression) {
   stats::dist(expression, method="euclidean")
 }
 
-#' This is an API for advanced users. This API may be changed.
+#' Generate perturbated expression by k-NN data
 #'
-#' Generate perturbated expression from the original expression based
-#' on k-NN (k-nearest neighbor) data.
+#' @description Generate perturbated expression from the original
+#'   expression based on k-NN (k-nearest neighbor) data.
+#'
+#' @note This is an API for advanced users. This API may be changed.
 #'
 #' @param expression The original expression Rows are samples. Columns
 #'   are features. Expression is normalized count of features.
@@ -102,12 +106,12 @@ calculate_canonical_correlation <- function(u, v) {
   svd(uTv)$d
 }
 
-calculate_grassman_max <- function(canonical_correlation) {
+calculate_grassmann_distance_max <- function(canonical_correlation) {
   max_cos_theta <- sort(canonical_correlation, decreasing=TRUE)[1]
   sqrt(max(0, 1 - max_cos_theta ** 2))
 }
 
-calculate_grassman_mean <- function(canonical_correlation) {
+calculate_grassmann_distance_mean <- function(canonical_correlation) {
   n_features <- length(canonical_correlation)
   (n_features - sum(canonical_correlation ** 2)) / n_features
 }
@@ -331,7 +335,9 @@ calculate_eigenvectors_list <- function(original,
          })
 }
 
-#' Estimate how much fit to tree.
+#' Estimate how the input data fits a tree-like topology
+#'
+#' @description Estimate how the input data fits a tree-like topology.
 #'
 #' @param target The target data to be estimated. It must be one of them:
 #'
@@ -394,21 +400,21 @@ estimate <- function(target,
                                                    build_tree,
                                                    max_k,
                                                    verbose)
-  target_grassman_distances <- c(
-    "max",
-    "mean"
+  target_methods <- c(
+    "grassmann_distance_max",
+    "grassmann_distance_mean"
   )
   ks <- c()
-  grassman_distances <- c()
+  methods <- c()
   means <- c()
   standard_deviations <- c()
   for (k in 1:max_k) {
     eigenvectors_pairs <- utils::combn(1:length(eigenvectors_list), 2)
     n_eigenvectors_pairs <- ncol(eigenvectors_pairs)
-    for (target_grassman_distance in target_grassman_distances) {
-      calculate <- get(paste0("calculate_grassman_", target_grassman_distance))
+    for (target_method in target_methods) {
+      calculate <- get(paste0("calculate_", target_method))
       ks <- c(ks, k)
-      grassman_distances <- c(grassman_distances, target_grassman_distance)
+      methods <- c(methods, target_method)
       values <- c()
       for (i in 1:n_eigenvectors_pairs) {
         u <- eigenvectors_list[[eigenvectors_pairs[1, i]]][, 1:k]
@@ -421,31 +427,42 @@ estimate <- function(target,
     }
   }
   data.frame(k=ks,
-             grassman_distance=grassman_distances,
+             method=methods,
              mean=means,
              standard_deviation=standard_deviations)
 }
 
 #' Plot estimated result
 #'
+#' @description Plot estimate result to get insight.
+#'
 #' @param estimated The estimated result to be visualized.
 #'
 #' @export
-plot_estimated <- function(estimated) {
+plot_estimated <- function(estimated, group=NULL) {
+  if ("name" %in% names(estimated)) {
+    group <- "interaction(name, method)"
+    linetype <- "name"
+  } else {
+    group <- "method"
+    linetype <- NULL
+  }
   ggplot2::ggplot(estimated) +
-    ggplot2::geom_line(ggplot2::aes(k,
-                                    mean,
-                                    group=grassman_distance,
-                                    color=grassman_distance)) +
-    ggplot2::geom_pointrange(ggplot2::aes(k,
-                                          mean,
-                                          group=grassman_distance,
-                                          color=grassman_distance,
-                                          ymin=mean - standard_deviation,
-                                          ymax=mean + standard_deviation),
+    ggplot2::geom_line(ggplot2::aes_string("k",
+                                           "mean",
+                                           group=group,
+                                           color="method",
+                                           linetype=linetype)) +
+    ggplot2::geom_pointrange(ggplot2::aes_string("k",
+                                                 "mean",
+                                                 group=group,
+                                                 color="method",
+                                                 linetype=linetype,
+                                                 ymin="mean - standard_deviation",
+                                                 ymax="mean + standard_deviation"),
                              shape=1) +
     ggplot2::scale_x_continuous(breaks=seq(1, max(estimated$k))) +
-    ggplot2::coord_cartesian(ylim=c(0, 2)) +
+    # ggplot2::coord_cartesian(ylim=c(0, 2)) +
     ggplot2::labs(x="K: The number of selected dimensions",
-                  y="Grassmann distance")
+                  y="Mean")
 }

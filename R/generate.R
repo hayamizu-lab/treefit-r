@@ -1,4 +1,6 @@
-#' Generate a N wands tree that has 2 features.
+#' Generate a N wands tree that has 2 features
+#'
+#' @description Generate a N wands tree that has 2 features.
 #'
 #' @param n_samples The number of samples to be generated.
 #"
@@ -9,23 +11,31 @@
 #'
 #' @export
 generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
-  n_dimensions <- 2
+  n_features <- 2
   sigma <- fatness / n_wands
   wand_lengths <- stats::rnorm(n_wands)
-  tree <- matrix(, nrow=n_samples, ncol=n_dimensions)
+  tree <- matrix(,
+                 nrow=n_samples,
+                 ncol=n_features,
+                 dimnames=list(lapply(1:n_samples,
+                                      function(i) {paste0("sample", i)}),
+                               lapply(1:n_features,
+                                      function(i) {paste0("feature", i)})))
   for (i in 1:n_samples) {
     wand <- sample(1:n_wands, 1)
-    theta <- wand / n_wands * n_dimensions * pi
+    theta <- wand / n_wands * n_features * pi
     position <- c(cos(theta), sin(theta))
     position <- position * stats::runif(1)
-    position <- position + stats::rnorm(n_dimensions, sd=sigma)
+    position <- position + stats::rnorm(n_features, sd=sigma)
     tree[i, ] <- position
   }
   tree
 }
 
-#' Generate a tree that consists of multiple N wands tree.
-#' The generated tree has 2 features.
+#' Generate a tree that consists of multiple N wands tree
+#'
+#' @description Generate a tree that consists of multiple N wands
+#'   tree. The generated tree has 2 features.
 #'
 #' @param n_samples_vector The vector of the number of samples to be
 #'   generated. For example, `c(200, 100, 300)` means that the first
@@ -45,9 +55,15 @@ generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
 generate_n_wands_linked_2d_tree_expression <- function(n_samples_vector,
                                                        n_wands_vector,
                                                        fatness) {
-  n_dimensions <- 2
+  n_features <- 2
   n_total_samples <- sum(n_samples_vector)
-  tree <- matrix(, nrow=0, ncol=n_dimensions)
+  tree <- matrix(,
+                 nrow=n_total_samples,
+                 ncol=n_features,
+                 dimnames=list(lapply(1:n_total_samples,
+                                      function(i) {paste0("sample", i)}),
+                               lapply(1:n_features,
+                                      function(i) {paste0("feature", i)})))
   sub_tree_offsets <- c(0.0, 0.0)
   for (i in 1:length(n_samples_vector)) {
     n_samples <- n_samples_vector[i]
