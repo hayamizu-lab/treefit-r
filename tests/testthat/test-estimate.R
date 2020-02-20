@@ -18,7 +18,7 @@ test_that("perturbate_knn", {
   n_perturbations <- 5
   strength <- 0.2
   min_diff_mean <- 0.001
-  max_diff_mean <- 0.01
+  max_diff_mean <- 0.02
   min_diff_variance <- 0.00001
   max_diff_variance <- 0.001
   perturbated_expression_list <-
