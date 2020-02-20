@@ -24,6 +24,7 @@ RoxygenNote: 7.0.2
 Imports:
     ggplot2,
     igraph,
+    methods,
     pracma
 Suggests:
     Seurat,
