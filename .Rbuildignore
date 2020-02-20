@@ -1,10 +1,10 @@
 \.dir-locals.el
 \.git
 \.github
-\.rds$
 \.tar.gz$
 ^Meta$
 ^doc$
 ^docs$
 ^logo\.png$
 ^pkgdown$
+^vignettes/.*\.rds$
