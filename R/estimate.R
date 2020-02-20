@@ -439,7 +439,7 @@ estimate <- function(target,
 #' @param estimated The estimated result to be visualized.
 #'
 #' @export
-plot_estimated <- function(estimated, group=NULL) {
+plot_estimated <- function(estimated) {
   if ("name" %in% names(estimated)) {
     group <- "interaction(name, method)"
     linetype <- "name"
