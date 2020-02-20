@@ -8,7 +8,7 @@ Authors@R: c(
            role=c("aut", "cre"),
            comment=c(ORCID="0000-0001-8825-6331"))
   )
-Description: Quantitative analysis software for trajectory inference
+Description: Quantitative analysis software for trajectory inference.
 License: GPL (>= 3) | file LICENSE
 URL:
     https://hayamizu-lab.github.io/treefit-r/,
