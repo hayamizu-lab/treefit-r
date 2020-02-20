@@ -174,7 +174,7 @@ do_reduce_dimension <- function(original, target, reduce_dimension, verbose) {
                                  verbose=verbose)
       original
     } else {
-      target <- prcomp(target, rank.=n_dimensions)$x
+      target <- stats::prcomp(target, rank.=n_dimensions)$x
     }
   } else if (reduce_dimension) {
     if (is_seurat(original)) {
