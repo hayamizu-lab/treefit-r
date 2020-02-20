@@ -1,5 +1,5 @@
 Package: treefit
-Title: Treefit
+Title: Quantitative analysis software for trajectory inference
 Version: 0.9.0
 Authors@R: c(
     person(given="Momoko",
@@ -8,7 +8,10 @@ Authors@R: c(
            role=c("aut", "cre"),
            comment=c(ORCID="0000-0001-8825-6331"))
   )
-Description: Quantitative analysis software for trajectory inference.
+Description: Treefit is a novel data analysis toolkit that helps you
+    perform two types of analysis: 1) checking the goodness-of-fit of tree
+    models to your single-cell gene expression data; and 2) deciding which
+    tree best fits your data.
 License: GPL (>= 3) | file LICENSE
 URL:
     https://hayamizu-lab.github.io/treefit-r/,
