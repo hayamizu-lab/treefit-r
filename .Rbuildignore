@@ -2,5 +2,8 @@
 \.git
 \.github
 \.rds$
+\.tar.gz$
 ^Meta$
 ^doc$
+^docs$
+^pkgdown$
