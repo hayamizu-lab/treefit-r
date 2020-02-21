@@ -1,9 +1,10 @@
 \.dir-locals.el
-\.git
-\.github
 \.tar.gz$
 ^Meta$
 ^Rakefile$
+^\.git$
+^\.github$
+^cran-comments\.md$
 ^doc$
 ^docs$
 ^logo\.png$
