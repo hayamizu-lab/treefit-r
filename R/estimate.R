@@ -395,7 +395,7 @@ calculate_eigenvectors_list <- function(original,
 #'
 #' @examples
 #' # Generate a tree data that have expression data not count data.
-#' tree <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.1)
+#' tree <- treefit::generate_n_wands_2d_tree_expression(300, 3, 0.1)
 #' # Estimate tree-likeness of the tree data.
 #' estimated <- treefit::estimate(list(expression=tree))
 #'
@@ -454,17 +454,17 @@ estimate <- function(target,
 #'
 #' @examples
 #' # Generate a tree data.
-#' tree <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.1)
+#' tree <- treefit::generate_n_wands_2d_tree_expression(300, 3, 0.1)
 #' # Estimate tree-likeness of the tree data.
 #' estimated <- treefit::estimate(list(expression=tree))
 #' # Visualize the estimated result.
 #' treefit::plot_estimated(estimated)
 #'
 #' # You can mix multiple estimated results by adding "name" column.
-#' tree2 <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.9)
+#' tree2 <- treefit::generate_n_wands_2d_tree_expression(300, 3, 0.9)
 #' estimated2 <- treefit::estimate(list(expression=tree2))
-#' treefit::plot_estimated(merge(cbind(estimated,  "name", "tree1"),
-#'                               cbind(estimated2, "name", "tree2"),
+#' treefit::plot_estimated(merge(cbind(estimated,  name="tree1"),
+#'                               cbind(estimated2, name="tree2"),
 #'                               all=TRUE))
 #'
 #' @export

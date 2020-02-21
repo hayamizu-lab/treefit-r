@@ -16,10 +16,12 @@
 #' # Generate a 3 wands tree data that has 500 samples including a bit noise
 #' # samples.
 #' tree_thin <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.1)
+#' plot(tree_thin)
 #'
 #' # Generate a 5 wands tree data that has 600 samples including many
 #' # noise samples.
 #' tree_fat <- treefit::generate_n_wands_2d_tree_expression(600, 5, 0.9)
+#' plot(tree_fat)
 #'
 #' @export
 generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
@@ -73,6 +75,7 @@ generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
 #'   treefit::generate_n_wands_linked_2d_tree_expression(c(200, 400, 300),
 #'                                                       c(3, 5, 4),
 #'                                                       0.1)
+#' plot(linked_tree_thin)
 #'
 #' # Generate a 4-3 wands linked tree data that have
 #' # 300-200 samples including many noise samples.
@@ -80,6 +83,7 @@ generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
 #'   treefit::generate_n_wands_linked_2d_tree_expression(c(300, 200),
 #'                                                       c(4, 3),
 #'                                                       0.9)
+#' plot(linked_tree_fat)
 #'
 #' @export
 generate_n_wands_linked_2d_tree_expression <- function(n_samples_vector,
