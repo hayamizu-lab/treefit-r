@@ -28,7 +28,7 @@ task :release do
   rm_rf(doc_dir)
   sh("Rscript",
      "-e",
-     "pkgdown::build_site(override=list(destination=\"#{doc_dir}\")")
+     "pkgdown::build_site(override=list(destination=\"#{doc_dir}\"))")
   sh("git", "add", doc_dir)
 end
 
