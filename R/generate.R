@@ -9,6 +9,18 @@
 #' @param fatness How much fat from the based tree. `[0.0, 1.0]` is
 #'   available value range.
 #'
+#' @return A generated `martix`. Rows are samples and columns are
+#'   features.
+#'
+#' @examples
+#' # Generate a 3 wands tree data that has 500 samples including a bit noise
+#' # samples.
+#' tree_thin <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.1)
+#'
+#' # Generate a 5 wands tree data that has 600 samples including many
+#' # noise samples.
+#' tree_fat <- treefit::generate_n_wands_2d_tree_expression(600, 5, 0.9)
+#'
 #' @export
 generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
   n_features <- 2
@@ -50,6 +62,24 @@ generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
 #'
 #' @param fatness How much fat from the based tree. `[0.0, 1.0]` is
 #'   available value range.
+#'
+#' @return A generated `martix`. Rows are samples and columns are
+#'   features.
+#'
+#' @examples
+#' # Generate a 3-5-4 wands linked tree data that have
+#' # 200-400-300 samples including a bit noise samples.
+#' linked_tree_thin <-
+#'   treefit::generate_n_wands_linked_2d_tree_expression(c(200, 400, 300),
+#'                                                       c(3, 5, 4),
+#'                                                       0.1)
+#'
+#' # Generate a 4-3 wands linked tree data that have
+#' # 300-200 samples including many noise samples.
+#' linked_tree_fat <-
+#'   treefit::generate_n_wands_linked_2d_tree_expression(c(300, 200),
+#'                                                       c(4, 3),
+#'                                                       0.9)
 #'
 #' @export
 generate_n_wands_linked_2d_tree_expression <- function(n_samples_vector,

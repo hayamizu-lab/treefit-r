@@ -377,13 +377,27 @@ calculate_eigenvectors_list <- function(original,
 #'
 #'   You can specify a function that builds tree of expression data.
 #'
-#' @param max_k How many low dimension laplacian eigenvectors are used.
+#' @param max_k How many low dimension Laplacian eigenvectors are used.
 #'
 #'   The default is 20.
 #'
 #' @param verbose Show messages if `TRUE`, don't show any messages otherwise.
 #'
 #'   The default is `FALSE`
+#'
+#' @return An estimated result as a `data.frame`. It has the following
+#'   columns:
+#'
+#'   * `k`: The number of Laplacian engenvectors used.
+#'   * `method`: How to calculate values.
+#'   * `mean`: The mean of the calculated values.
+#'   * `standard_deviation`: The standard deviation of the calculated values.
+#'
+#' @examples
+#' # Generate a tree data that have expression data not count data.
+#' tree <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.1)
+#' # Estimate tree-likeness of the tree data.
+#' estimated <- treefit::estimate(list(expression=tree))
 #'
 #' @export
 estimate <- function(target,
@@ -437,6 +451,21 @@ estimate <- function(target,
 #' @description Plot estimate result to get insight.
 #'
 #' @param estimated The estimated result to be visualized.
+#'
+#' @examples
+#' # Generate a tree data.
+#' tree <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.1)
+#' # Estimate tree-likeness of the tree data.
+#' estimated <- treefit::estimate(list(expression=tree))
+#' # Visualize the estimated result.
+#' treefit::plot_estimated(estimated)
+#'
+#' # You can mix multiple estimated results by adding "name" column.
+#' tree2 <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.9)
+#' estimated2 <- treefit::estimate(list(expression=tree2))
+#' treefit::plot_estimated(merge(cbind(estimated,  "name", "tree1"),
+#'                               cbind(estimated2, "name", "tree2"),
+#'                               all=TRUE))
 #'
 #' @export
 plot_estimated <- function(estimated) {
