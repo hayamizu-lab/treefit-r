@@ -4,10 +4,12 @@
 def version
   return @version if @version
   File.open("DESCRIPTION") do |description|
-    case description
-    when /^Version: (.+)$/
-      @version = $1
-      return @version
+    description.each_line do |line|
+      case line
+      when /^Version: (.+)$/
+        @version = $1
+        return @version
+      end
     end
   end
   nil
