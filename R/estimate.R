@@ -388,7 +388,7 @@ calculate_eigenvectors_list <- function(original,
 #' @return An estimated result as a `data.frame`. It has the following
 #'   columns:
 #'
-#'   * `k`: The number of Laplacian engenvectors used.
+#'   * `k`: The number of Laplacian eigenvectors used.
 #'   * `method`: How to calculate values.
 #'   * `mean`: The mean of the calculated values.
 #'   * `standard_deviation`: The standard deviation of the calculated values.

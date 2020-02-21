@@ -13,7 +13,7 @@ input data to improve precision. You can use
 [Seurat](https://satijalab.org/seurat/) for pre-processing.
 
 In this document, you analyze the dataset of [**Trapnell <i>el
-al</i>., 2014, Nature
+al.</i>, 2014, Nature
 Biotechnology**](https://www.nature.com/articles/nbt.2859) with
 Treefit. Their paper describes the details of the dataset. The dataset
 was collected to research the process of the differentiation and
