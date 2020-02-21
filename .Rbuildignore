@@ -3,6 +3,7 @@
 \.github
 \.tar.gz$
 ^Meta$
+^Rakefile$
 ^doc$
 ^docs$
 ^logo\.png$
