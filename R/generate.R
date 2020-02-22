@@ -27,7 +27,6 @@
 generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
   n_features <- 2
   sigma <- fatness / n_wands
-  wand_lengths <- stats::rnorm(n_wands)
   tree <- matrix(,
                  nrow=n_samples,
                  ncol=n_features,
