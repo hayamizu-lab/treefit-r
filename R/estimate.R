@@ -492,6 +492,6 @@ plot_estimated <- function(estimated) {
                              shape=1) +
     ggplot2::scale_x_continuous(breaks=seq(1, max(estimated$k))) +
     # ggplot2::coord_cartesian(ylim=c(0, 2)) +
-    ggplot2::labs(x="K: The number of selected dimensions",
-                  y="Mean")
+    ggplot2::labs(x="Dimensionality of the feature space of tree structures",
+                  y="Instability of tree structures (mean and SD)")
 }
