@@ -5,7 +5,7 @@ Authors@R: c(
       person(given="Momoko",
              family="Hayamizu",
              email="hayamizu@ism.ac.jp",
-             role=c("aut", "cre"),
+             role=c("aut"),
              comment=c(ORCID="0000-0001-8825-6331")),
       person(given="Kouhei",
              family="Sutou",
