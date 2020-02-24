@@ -56,4 +56,4 @@ jobs:
           Rscript -e "devtools::test()"
       - name: Check
         run: |
-          Rscript -e "devtools::check()"
+          Rscript -e "devtools::check(cran=TRUE)"
