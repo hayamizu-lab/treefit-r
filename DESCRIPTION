@@ -28,6 +28,7 @@ RoxygenNote: 7.0.2
 Imports:
     ggplot2,
     igraph,
+    patchwork,
     pracma
 Suggests:
     Seurat,

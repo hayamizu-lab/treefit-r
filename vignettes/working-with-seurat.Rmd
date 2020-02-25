@@ -1,0 +1,206 @@
+---
+title: Working with Seurat
+vignette: >
+  %\VignetteIndexEntry{Working with Seurat}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output: rmarkdown::html_vignette
+---
+
+This is a user-friendly manual for biologists who are interested in
+performing quantitative trajectory inference with the Treefit
+package. If you are not familiar with the basic workflow of Treefit,
+then it would be a good idea to look at the introductory tutorial
+(`vignette("treefit")`) before using it.
+
+## Why "quantitative" trajectory inference?
+
+Single-cell technologies are expected to help us discover a novel type
+of cells and revolutionize our understanding of the process of cell
+differentiation, and trajectory inference is one of the key
+computational challenges in single-cell transcriptomics. In recent
+years, many software packages have been developed and widely used to
+extract an underlying "tree" trajectory from single-cell RNA-seq data.
+
+However, trajectory inference often suffers from the uncertainty due
+to the heterogeneity of individual cells and the high levels of
+technical noise in single-cell experiments. Hence, it was a fatal
+problem that there was no method to quantitatively assess the
+reliability of the estimated trajectory and to distinguish distinct
+cell types in an objective manner so far. Of course, many handy
+software packages are available for visualizing data and helping
+perform exploratory data analysis; however, we must stress that
+different visualization techniques often result in completely
+different pictures and the interpretation can be quite subjective and
+thus it is hard to reach a scientific truth solely by this
+approach. In order to facilitate scientific discoveries from
+single-cell gene expression data, we need a *quantitative*
+methodology.
+
+This is why we developed Treefit - the first software for performing
+*quantitative* trajectory inference. Treefit can be used in
+conjunction with existing popular software packages such as
+[Seurat](https://satijalab.org/seurat/) and
+[dynverse](https://dynverse.org/). In this tutorial, we demonstrate
+how to use Treefit together with Seurat by analyzing the single-cell
+RNA-seq dataset in [Trapnell <i>el al.</i>, 2014, Nature
+Biotechnology][trapnell-2014].
+
+## Trajectory inference using Treefit and Seurat
+
+As the Treefit package is meant to be used with gene expression data
+(either raw counts or normalized values) that have been already
+quality controlled, it is a good idea to use Seurat or other popular
+toolkits designed for the quality control of single-cell gene
+expression data (<i>e.g.</i>, filtering cells and normalizing the
+data) before the Treefit analysis.
+
+### Loading the dataset
+
+We analyze the dataset provided in [Trapnell <i>el al.</i>, 2014,
+Nature Biotechnology][trapnell-2014]. This dataset was originally
+acquired for the purpose of studying the process of differentiation of
+human myoblasts that can be reasonably explained by the linear model
+(<i>i.e.</i>, non-branching, chain-like structure). However, as the
+authors discuss in detail in the original article, their trajectory
+inference software based on a minimum spanning tree (MST) helped
+detect contamination with another cell lineage which was not related
+to myogenesis and so revealed that the bifurcation tree model
+(<i>i.e.</i>, Y-shaped tree structure) fits the data better than the
+linear model.
+
+To use this dataset, we download and read the dataset provided in
+dynverse as follows (see https://zenodo.org/record/1443566 for
+details).
+
+```{r load}
+trapnell.path <- "myoblast-differentiation_trapnell.rds"
+if (!file.exists(trapnell.path)) {
+  download.file("https://zenodo.org/record/1443566/files/real/gold/myoblast-differentiation_trapnell.rds?download=1",
+                trapnell.path,
+                mode="wb")
+}
+trapnell.dynverse <- readRDS(trapnell.path)
+```
+
+### Preprocessing with Seurat
+
+From now, we demonstrate how to preprocess the above data with
+Seurat. In order to handle data in Seurat, we first need to create a
+`Seurat` object. When creating a `Seurat` object from dynverse data,
+we must be aware that the roles of the rows and columns are reversed
+and therefore we need to transpose the matrix. In dynverse data, the
+rows and columns correspond to cells and genes, respectively, and vice
+versa in `Seurat` objects.
+
+Here we assume that we wish to perform the following preprocessing.
+
+  * Excluding each gene that is only expressed in less than 3 cells
+  * Removing each cell that only expresses less than 200 genes
+
+This can be done by setting the designated parameters as follows.
+
+```{r preprocessing}
+trapnell <- Seurat::CreateSeuratObject(counts=t(trapnell.dynverse$count),
+                                       min.cells=3,
+                                       min.features=200)
+```
+
+The "Feature names cannot have underscores ..." warning message can be
+ignored. It's caused by difference between dynverse and
+Seurat. Dynverse uses underscores for gene names but Seurat doesn't
+allow it. Seurat replaces underscores with dashes automatically with
+the warning message.
+
+### Visualization with Seurat
+
+Although pictures may not always describe reality, we usually
+visualize data before starting detailed analysis. Here we create a
+scatter plot by principal component analysis (PCA). Below are a few
+lines of code to do this and the result is shown in Figure 1.
+
+```{r visualization, fig.asp=1, fig.cap="Figure 1. The result of PCA for the myoblast dataset"}
+trapnell <- Seurat::FindVariableFeatures(trapnell, verbose=FALSE)
+trapnell <- Seurat::ScaleData(trapnell, verbose=FALSE)
+trapnell <- Seurat::RunPCA(trapnell, verbose=FALSE)
+plot(Seurat::Embeddings(trapnell))
+```
+
+It is hard to reach the truth from the PCA result shown in
+Figure 1. Unlike the tree-like toy data analyzed in the previous
+tutorial (`vignette("treefit")`), we cannot easily recognize the
+underlying tree structure for various reasons (<i>e.g.</i>, high level
+of noise, contamination with different types of cells, and the
+inaccuracy of two-dimensional visualization of high dimensional data).
+
+Figure 2b in [Trapnell <i>el al.</i>, 2014, Nature
+Biotechnology][trapnell-2014] shows that this dataset contains three
+distinct types of cells (<i>i.e.</i>, proliferating cells,
+differentiating myoblasts, and contaminating interstitial mesenchymal
+cells), which led the authors to adopt a Y-shaped tree model
+(<i>i.e.</i>, a star tree with three arms) to explain the
+data. However, it is difficult to quantify the reliability of this
+tree model and to confidently predict that the best-fit tree consists
+of three principal paths.
+
+## Quantitative trajectory inference with Treefit
+
+### Performing the Treefit analysis
+
+Let us use Treefit in order to estimate the tree-likeness of the
+preprocessed myoblast data and to predict the number of principal
+paths in the best-fit tree. The workflow is the same as the toy data
+analysis described in the previous tutorial (`vignette("treefit")`).
+
+```{r estimate}
+trapnell.fit <- treefit::treefit(trapnell)
+trapnell.fit
+```
+
+```{r plot, fig.cap="Figure 2. Summary of the Treefit analysis results"}
+star.tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.1)
+fit.tree_like <- treefit::treefit(list(expression=star.tree_like),
+                                  name="tree-like")
+star.non_tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.8)
+fit.non_tree_like <- treefit::treefit(list(expression=star.non_tree_like),
+                                      name="non-tree-like")
+plot(trapnell.fit, fit.tree_like, fit.non_tree_like)
+```
+
+### Interpreting the results
+
+As explained in the previous tutorial (`vignette("treefit")`), the two
+Grassmann distances `$max_cca_distance` and `$rms_cca_distance` play
+an essential role in the Treefit analysis. The goal of the first
+analysis using `$max_cca_distance` is to measure the goodness-of-fit
+between data and data-derived tree trajectories, and this helps
+biologists make a mathematical and statistical evidence-based
+quantitative discussion. The other analysis with `$rms_cca_distance`
+aims to predict the number of principal paths in the best-fit tree
+trajectory, and the result of this analysis can be helpful to discover
+novel cell types or make sure whether or not there are contaminating
+cell types.
+
+If we compare the mean values of `$max_cca_distance` shown in the left
+panel of Figure 2 with the previous results (`vignette("treefit")`),
+we can see that the tree-likeness of the myoblast dataset is more like
+the noisy tree-like data with the `fatness` 0.8 rather than the
+tree-like data with the `fatness` 0.1. This estimate is reasonable in
+light of the fact that the myoblast dataset in [Trapnell <i>el
+al.</i>, 2014, Nature Biotechnology][trapnell-2014] contains some
+contaminating cell types that are not related to myogenesis.
+
+Turning to the right panel of Figure 2, we see that
+`$rms_cca_distance` attains the local minimum at
+<i>p</i>=2. Therefore, we can deduce that the best-fit tree trajectory
+for the myoblast data consists of <i>p</i>+1=3 principal
+paths. `$n_principal_paths_candidates[1]` also tells us the number
+principal paths is 3. Recalling the discussion in [Trapnell <i>el
+al.</i>, 2014, Nature Biotechnology][trapnell-2014] (<i>i.e.</i>, the
+cells in the dataset can be classified into the following three
+groups: proliferating cells; differentiating myoblasts; and
+contaminating interstitial mesenchymal cells), we thus see that
+Treefit has correctly predicted the number of distinct principal paths
+forming the best-fit tree trajectory for this dataset.
+
+[trapnell-2014]: https://www.nature.com/articles/nbt.2859

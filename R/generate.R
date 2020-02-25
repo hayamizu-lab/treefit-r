@@ -1,33 +1,36 @@
-#' Generate a N wands tree that has 2 features
+#' Generate a 2-dimensional star tree data
 #'
-#' @description Generate a N wands tree that has 2 features.
+#' @description Generate a 2-dimensional star tree data that contain
+#'   `n_samples` data points and fit a star tree with `n_arms` arms.
 #'
 #' @param n_samples The number of samples to be generated.
 #"
-#' @param n_wands The number of wands to be generated.
+#' @param n_arms The number of arms to be generated.
 #'
-#' @param fatness How much fat from the based tree. `[0.0, 1.0]` is
+#' @param fatness How fat from the based star tree. `[0.0, 1.0]` is
 #'   available value range.
 #'
-#' @return A generated `martix`. Rows are samples and columns are
-#'   features.
+#' @return A generated `martix`. The rows and columns correspond to
+#'   samples and features.
 #'
 #' @examples
-#' # Generate a 3 wands tree data that has 500 samples including a bit noise
-#' # samples.
-#' tree_thin <- treefit::generate_n_wands_2d_tree_expression(500, 3, 0.1)
-#' plot(tree_thin)
+#' # Generate a 2-dimensional star tree data that contain 500 data points
+#' # and fit a star tree with 3 arms. The generated data are a bit noisy but
+#' # tree-like.
+#' star.tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.1)
+#' plot(star.tree_like)
 #'
-#' # Generate a 5 wands tree data that has 600 samples including many
-#' # noise samples.
-#' tree_fat <- treefit::generate_n_wands_2d_tree_expression(600, 5, 0.9)
-#' plot(tree_fat)
+#' # Generate a 2-dimensional star tree data that contain 600 data points
+#' # and fit a star tree with 5 arms. The generated data are very noisy and
+#' # less tree-like.
+#' star.non_tree_like <- treefit::generate_2d_n_arms_star_data(600, 5, 0.9)
+#' plot(star.non_tree_like)
 #'
 #' @export
-generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
+generate_2d_n_arms_star_data <- function(n_samples, n_arms, fatness) {
   n_features <- 2
-  sigma <- fatness / n_wands
-  tree <- matrix(,
+  sigma <- fatness / n_arms
+  star <- matrix(,
                  nrow=n_samples,
                  ncol=n_features,
                  dimnames=list(lapply(1:n_samples,
@@ -35,79 +38,82 @@ generate_n_wands_2d_tree_expression <- function(n_samples, n_wands, fatness) {
                                lapply(1:n_features,
                                       function(i) {paste0("feature", i)})))
   for (i in 1:n_samples) {
-    wand <- sample(1:n_wands, 1)
-    theta <- wand / n_wands * n_features * pi
+    arm <- sample(1:n_arms, 1)
+    theta <- arm / n_arms * n_features * pi
     position <- c(cos(theta), sin(theta))
     position <- position * stats::runif(1)
     position <- position + stats::rnorm(n_features, sd=sigma)
-    tree[i, ] <- position
+    star[i, ] <- position
   }
-  tree
+  star
 }
 
-#' Generate a tree that consists of multiple N wands tree
+#' Generate a 2-dimensional linked star tree data
 #'
-#' @description Generate a tree that consists of multiple N wands
-#'   tree. The generated tree has 2 features.
+#' @description Generate a 2-dimensional linked star tree data. Each
+#'   star tree data contain `n_samples_vector[i]` data points and fit
+#'   a star tree with `n_arms_vector[i]` arms.
 #'
 #' @param n_samples_vector The vector of the number of samples to be
 #'   generated. For example, `c(200, 100, 300)` means that the first
 #'   tree has 200 samples, the second tree has 100 samples and the
 #'   third tree has 300 samples.
 #'
-#' @param n_wands_vector The vector of the number of wands to be
-#'   generated.  For example, `c(3, 2, 5)` means the first tree has 3
-#'   wands, the second tree has 2 wands and the third tree has 5
-#'   wands. The size of `n_wands_vector` must equal to the size of
-#'   `n_samples_vector`.
+#' @param n_arms_vector The vector of the number of arms to be
+#'   generated.  For example, `c(3, 2, 5)` means the first tree fits a
+#'   star tree with 3 arms, the second tree fits a star tree with 2
+#'   arms and the third tree fits a star tree with 5 arms. The size of
+#'   `n_arms_vector` must equal to the size of `n_samples_vector`.
 #'
-#' @param fatness How much fat from the based tree. `[0.0, 1.0]` is
+#' @param fatness How fat from the based tree. `[0.0, 1.0]` is
 #'   available value range.
 #'
-#' @return A generated `martix`. Rows are samples and columns are
-#'   features.
+#' @return A generated `martix`. The rows and columns correspond to
+#'   samples and features.
 #'
 #' @examples
-#' # Generate a 3-5-4 wands linked tree data that have
-#' # 200-400-300 samples including a bit noise samples.
-#' linked_tree_thin <-
-#'   treefit::generate_n_wands_linked_2d_tree_expression(c(200, 400, 300),
-#'                                                       c(3, 5, 4),
-#'                                                       0.1)
-#' plot(linked_tree_thin)
+#' # Generate a 2-dimensional linked star tree data that contain
+#' # 200-400-300 data points and fit a linked star tree with 3-5-4
+#' # arms. The generated data are a bit noisy but tree-like.
+#' linked_star.tree_like <-
+#'   treefit::generate_2d_n_arms_linked_star_data(c(200, 400, 300),
+#'                                                c(3, 5, 4),
+#'                                                0.1)
+#' plot(linked_star.tree_like)
 #'
-#' # Generate a 4-3 wands linked tree data that have
-#' # 300-200 samples including many noise samples.
-#' linked_tree_fat <-
-#'   treefit::generate_n_wands_linked_2d_tree_expression(c(300, 200),
-#'                                                       c(4, 3),
-#'                                                       0.9)
-#' plot(linked_tree_fat)
+#' # Generate a 2-dimensional linked star tree data that contain
+#' # 300-200 data points and fit a linked star tree with 4-3 arms.
+#' # The generated data are very noisy and less tree-like.
+#' linked_star.non_tree_like <-
+#'   treefit::generate_2d_n_arms_linked_star_data(c(300, 200),
+#'                                                c(4, 3),
+#'                                                0.9)
+#' plot(linked_star.non_tree_like)
 #'
 #' @export
-generate_n_wands_linked_2d_tree_expression <- function(n_samples_vector,
-                                                       n_wands_vector,
-                                                       fatness) {
+generate_2d_n_arms_linked_star_data <- function(n_samples_vector,
+                                                n_arms_vector,
+                                                fatness) {
   n_features <- 2
   n_total_samples <- sum(n_samples_vector)
-  tree <- matrix(,
+  star <- matrix(,
                  nrow=n_total_samples,
                  ncol=n_features,
                  dimnames=list(lapply(1:n_total_samples,
                                       function(i) {paste0("sample", i)}),
                                lapply(1:n_features,
                                       function(i) {paste0("feature", i)})))
-  sub_tree_offsets <- c(0.0, 0.0)
+  sub_star_offsets <- c(0.0, 0.0)
   for (i in 1:length(n_samples_vector)) {
     n_samples <- n_samples_vector[i]
-    n_wands <- n_wands_vector[i]
-    sub_tree <- generate_n_wands_2d_tree_expression(n_samples, n_wands, fatness)
-    theta <- 2 * pi * (n_wands %/% 2 / n_wands)
-    sub_tree_offsets[1] <- sub_tree_offsets[1] + -cos(theta) + 1
-    sub_tree_offsets[2] <- sub_tree_offsets[2] + -sin(theta)
-    sub_tree[, 1] <- sub_tree[, 1] + sub_tree_offsets[1]
-    sub_tree[, 2] <- sub_tree[, 2] + sub_tree_offsets[2]
-    tree <- rbind(tree, sub_tree)
+    n_arms <- n_arms_vector[i]
+    sub_star <- generate_2d_n_arms_star_data(n_samples, n_arms, fatness)
+    theta <- 2 * pi * (n_arms %/% 2 / n_arms)
+    sub_star_offsets[1] <- sub_star_offsets[1] + -cos(theta) + 1
+    sub_star_offsets[2] <- sub_star_offsets[2] + -sin(theta)
+    sub_star[, 1] <- sub_star[, 1] + sub_star_offsets[1]
+    sub_star[, 2] <- sub_star[, 2] + sub_star_offsets[2]
+    star <- rbind(star, sub_star)
   }
-  tree
+  star
 }

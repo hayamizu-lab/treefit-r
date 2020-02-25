@@ -5,9 +5,9 @@
 #'
 #' @note This is an API for advanced users. This API may be changed.
 #'
-#' @param counts The original counts Rows are samples. Columns are
-#'   features. Values are count of features.
-#"
+#' @param counts The original counts. The rows and columns correspond
+#'   to samples and features. The values are count of features.
+#'
 #' @param strength How much perturbated. `0.0` is weak. `1.0` is strong.
 #'
 #' @export
@@ -40,8 +40,9 @@ calculate_distance_matrix <- function(expression) {
 #'
 #' @note This is an API for advanced users. This API may be changed.
 #'
-#' @param expression The original expression Rows are samples. Columns
-#'   are features. Expression is normalized count of features.
+#' @param expression The original expression. The rows and columns
+#'   correspond to samples and features. The expression is normalized
+#'   count of features.
 #'
 #' @param strength How much perturbated. `0.0` is weak. `1.0` is strong.
 #'
@@ -77,7 +78,7 @@ perturbate_knn <- function(expression, strength=1.0) {
   perturbated_expression
 }
 
-calculate_low_dimension_laplacian_eigenvectors <- function(mst, k) {
+calculate_low_dimension_laplacian_eigenvectors <- function(mst, p) {
   e <- eigen(igraph::laplacian_matrix(mst))
   n_target_vectors <- nrow(e$vectors)
   ## Remove zero eigenvalues
@@ -85,9 +86,9 @@ calculate_low_dimension_laplacian_eigenvectors <- function(mst, k) {
     n_target_vectors <- n_target_vectors - 1
   }
   low_dimension_values <-
-    e$values[n_target_vectors:(n_target_vectors - k + 1)]
+    e$values[n_target_vectors:(n_target_vectors - p + 1)]
   low_dimension_vectors <-
-    e$vectors[, n_target_vectors:(n_target_vectors - k + 1)]
+    e$vectors[, n_target_vectors:(n_target_vectors - p + 1)]
   if (anyDuplicated(low_dimension_values)) {
     message(paste("low dimension eigenvalues have no duplicated values: ",
                   toString(low_dimension_values),
@@ -106,12 +107,12 @@ calculate_canonical_correlation <- function(u, v) {
   svd(uTv)$d
 }
 
-calculate_grassmann_distance_max <- function(canonical_correlation) {
+calculate_grassmann_distance_max_cca <- function(canonical_correlation) {
   max_cos_theta <- sort(canonical_correlation, decreasing=TRUE)[1]
   sqrt(max(0, 1 - max_cos_theta ** 2))
 }
 
-calculate_grassmann_distance_mean <- function(canonical_correlation) {
+calculate_grassmann_distance_rms_cca <- function(canonical_correlation) {
   n_features <- length(canonical_correlation)
   (n_features - sum(canonical_correlation ** 2)) / n_features
 }
@@ -171,6 +172,7 @@ do_reduce_dimension <- function(original, target, reduce_dimension, verbose) {
                                  assay_name,
                                  npcs=n_dimensions,
                                  reduction.name=pca_reduction_name,
+                                 reduction.key="TREEFITPC_",
                                  verbose=verbose)
       original
     } else {
@@ -224,7 +226,7 @@ calculate_eigenvectors_list <- function(original,
                                         normalize,
                                         reduce_dimension,
                                         build_tree,
-                                        max_k,
+                                        max_p,
                                         verbose) {
   n_perturbations <- 8
   ## n_perturbations <- 2
@@ -331,23 +333,26 @@ calculate_eigenvectors_list <- function(original,
            if (verbose) {
              message("Calculate laplacian eigenvectors")
            }
-           calculate_low_dimension_laplacian_eigenvectors(tree, max_k)
+           calculate_low_dimension_laplacian_eigenvectors(tree, max_p)
          })
 }
 
-#' Estimate how the input data fits a tree-like topology
+#' Estimate the goodness-of-fit between tree models and data
 #'
-#' @description Estimate how the input data fits a tree-like topology.
+#' @description Estimate the goodness-of-fit between tree models and
+#'   data.
 #'
 #' @param target The target data to be estimated. It must be one of them:
 #'
-#'   * `list(counts=COUNTS, expression=EXPRESSION)`:
-#'     You must specify at least one of `COUNTS` and `EXPRESSION`.
-#'     They are `matrix`. Rows are samples such as cells.
-#'     Columns are features such as genes.
-#'     `COUNTS`'s value is count data such as the number of genes expressed.
-#'     `EXPRESSION`'s value is normalized count data.
-#'   * Seurat object
+#'   * `list(counts=COUNTS, expression=EXPRESSION)`: You must specify
+#'     at least one of `COUNTS` and `EXPRESSION`.  They are
+#'     `matrix`. The rows and columns correspond to samples such
+#'     cells and features such as genes. `COUNTS`'s value is count
+#'     data such as the number of genes expressed.  `EXPRESSION`'s
+#'     value is normalized count data.
+#'   * `Seurat` object
+#'
+#' @param name The name of `target` as string.
 #'
 #' @param perturbations How to perturbate the target data.
 #'
@@ -377,7 +382,7 @@ calculate_eigenvectors_list <- function(original,
 #'
 #'   You can specify a function that builds tree of expression data.
 #'
-#' @param max_k How many low dimension Laplacian eigenvectors are used.
+#' @param max_p How many low dimension Laplacian eigenvectors are used.
 #'
 #'   The default is 20.
 #'
@@ -385,113 +390,196 @@ calculate_eigenvectors_list <- function(original,
 #'
 #'   The default is `FALSE`
 #'
-#' @return An estimated result as a `data.frame`. It has the following
-#'   columns:
+#' @return An estimated result as a `treefit` object. It has the
+#'   following elements:
 #'
-#'   * `k`: The number of Laplacian eigenvectors used.
-#'   * `method`: How to calculate values.
-#'   * `mean`: The mean of the calculated values.
-#'   * `standard_deviation`: The standard deviation of the calculated values.
+#'   * `max_cca_distance`: The result of max canonical correlation
+#'     analysis distance as `data.frame`.
+#'   * `rms_cca_distance`: The result of root mean square canonical
+#'     correlation analysis distance as `data.frame`.
+#'   * `n_principal_paths_candidates`: The candidates of the number of
+#'     principal paths.
+#'
+#'   `data.frame` of `max_cca_distance` and `rms_cca_distance` has the
+#'   same structure. They have the following columns:
+#'
+#'   * `p`: Dimensionality of the feature space of tree structures.
+#'   * `mean`: The mean of the target distance values.
+#'   * `standard_deviation`: The standard deviation of the target
+#'     distance values.
 #'
 #' @examples
-#' # Generate a tree data that have expression data not count data.
-#' tree <- treefit::generate_n_wands_2d_tree_expression(300, 3, 0.1)
+#' # Generate a star tree data that have normalized expression values
+#' # not count data.
+#' star <- treefit::generate_2d_n_arms_star_data(300, 3, 0.1)
 #' # Estimate tree-likeness of the tree data.
-#' estimated <- treefit::estimate(list(expression=tree))
+#' fit <- treefit::treefit(list(expression=star))
 #'
 #' @export
-estimate <- function(target,
-                     perturbations=NULL,
-                     normalize=NULL,
-                     reduce_dimension=NULL,
-                     build_tree=NULL,
-                     max_k=20,
-                     verbose=FALSE) {
+treefit <- function(target,
+                    name=NULL,
+                    perturbations=NULL,
+                    normalize=NULL,
+                    reduce_dimension=NULL,
+                    build_tree=NULL,
+                    max_p=20,
+                    verbose=FALSE) {
   eigenvectors_list <- calculate_eigenvectors_list(target,
                                                    perturbations,
                                                    normalize,
                                                    reduce_dimension,
                                                    build_tree,
-                                                   max_k,
+                                                   max_p,
                                                    verbose)
-  target_methods <- c(
-    "grassmann_distance_max",
-    "grassmann_distance_mean"
-  )
-  ks <- c()
-  methods <- c()
-  means <- c()
-  standard_deviations <- c()
-  for (k in 1:max_k) {
+  if (is.null(name)) {
+    name <- deparse(substitute(target))
+  }
+  ps <- c()
+  max_cca_distance.means <- c()
+  max_cca_distance.standard_deviations <- c()
+  rms_cca_distance.means <- c()
+  rms_cca_distance.standard_deviations <- c()
+  for (p in 1:max_p) {
     eigenvectors_pairs <- utils::combn(1:length(eigenvectors_list), 2)
     n_eigenvectors_pairs <- ncol(eigenvectors_pairs)
-    for (target_method in target_methods) {
-      calculate <- get(paste0("calculate_", target_method))
-      ks <- c(ks, k)
-      methods <- c(methods, target_method)
-      values <- c()
-      for (i in 1:n_eigenvectors_pairs) {
-        u <- eigenvectors_list[[eigenvectors_pairs[1, i]]][, 1:k]
-        v <- eigenvectors_list[[eigenvectors_pairs[2, i]]][, 1:k]
-        canonical_correlation <- calculate_canonical_correlation(u, v)
-        values <- c(values, calculate(canonical_correlation))
-      }
-      means <- c(means, mean(values))
-      standard_deviations <- c(standard_deviations, stats::sd(values))
+    ps <- c(ps, p)
+    max_cca_distance.values <- c()
+    rms_cca_distance.values <- c()
+    for (i in 1:n_eigenvectors_pairs) {
+      u <- eigenvectors_list[[eigenvectors_pairs[1, i]]][, 1:p]
+      v <- eigenvectors_list[[eigenvectors_pairs[2, i]]][, 1:p]
+      canonical_correlation <- calculate_canonical_correlation(u, v)
+      max_cca_distance.values <-
+        c(max_cca_distance.values,
+          calculate_grassmann_distance_max_cca(canonical_correlation))
+      rms_cca_distance.values <-
+        c(rms_cca_distance.values,
+          calculate_grassmann_distance_rms_cca(canonical_correlation))
+    }
+    max_cca_distance.means <-
+      c(max_cca_distance.means,
+        mean(max_cca_distance.values))
+    max_cca_distance.standard_deviations <-
+      c(max_cca_distance.standard_deviations,
+        stats::sd(max_cca_distance.values))
+    rms_cca_distance.means <-
+      c(rms_cca_distance.means,
+        mean(rms_cca_distance.values))
+    rms_cca_distance.standard_deviations <-
+      c(rms_cca_distance.standard_deviations,
+        stats::sd(rms_cca_distance.values))
+  }
+  n_principal_paths_candidates <- c()
+  for (p in 1:(max_p - 1)) {
+    if (p == 1) {
+      rms_cca_distance_mean_before <- 0
+    } else {
+      rms_cca_distance_mean_before <- rms_cca_distance.means[p - 1]
+    }
+    rms_cca_distance_mean <- rms_cca_distance.means[p]
+    rms_cca_distance_mean_after <- rms_cca_distance.means[p + 1]
+    if (rms_cca_distance_mean_before > rms_cca_distance_mean &&
+          rms_cca_distance_mean < rms_cca_distance_mean_after) {
+      n_principal_paths_candidates <-
+        c(n_principal_paths_candidates,
+          p + 1)
     }
   }
-  data.frame(k=ks,
-             method=methods,
-             mean=means,
-             standard_deviation=standard_deviations)
+
+  attributes <- list(
+    name=name,
+    max_cca_distance=
+      data.frame(p=ps,
+                 mean=max_cca_distance.means,
+                 standard_deviation=max_cca_distance.standard_deviations),
+    rms_cca_distance=
+      data.frame(p=ps,
+                 mean=rms_cca_distance.means,
+                 standard_deviation=rms_cca_distance.standard_deviations),
+    n_principal_paths_candidates=n_principal_paths_candidates
+  )
+  structure(attributes, class=c("treefit"))
 }
 
-#' Plot estimated result
+#' Plot estimated results
 #'
-#' @description Plot estimate result to get insight.
+#' @description Plot estimate results to get insight.
 #'
-#' @param estimated The estimated result to be visualized.
+#' @param x The estimated result by `treefit()` to be visualized.
+#'
+#' @param ... The more estimated results to be visualized together or
+#'   other graphical parameters.
 #'
 #' @examples
 #' # Generate a tree data.
-#' tree <- treefit::generate_n_wands_2d_tree_expression(300, 3, 0.1)
-#' # Estimate tree-likeness of the tree data.
-#' estimated <- treefit::estimate(list(expression=tree))
+#' tree <- treefit::generate_2d_n_arms_star_data(300, 3, 0.1)
+#' # Estimate the goodness-of-fit between tree models and the tree data.
+#' fit <- treefit::treefit(list(expression=tree), "tree")
 #' # Visualize the estimated result.
-#' treefit::plot_estimated(estimated)
+#' plot(fit)
 #'
 #' # You can mix multiple estimated results by adding "name" column.
-#' tree2 <- treefit::generate_n_wands_2d_tree_expression(300, 3, 0.9)
-#' estimated2 <- treefit::estimate(list(expression=tree2))
-#' treefit::plot_estimated(merge(cbind(estimated,  name="tree1"),
-#'                               cbind(estimated2, name="tree2"),
-#'                               all=TRUE))
+#' tree2 <- treefit::generate_2d_n_arms_star_data(300, 3, 0.9)
+#' fit2 <- treefit::treefit(list(expression=tree2), "tree2")
+#' plot(fit, fit2)
+#'
+#' @import patchwork
 #'
 #' @export
-plot_estimated <- function(estimated) {
-  if ("name" %in% names(estimated)) {
-    group <- "interaction(name, method)"
-    linetype <- "name"
+plot.treefit <- function(x, ...) {
+  fits <- list(x, ...)
+  if (length(fits) == 1) {
+    all_max_cca_distances <- fits[[1]]$max_cca_distance
+    all_rms_cca_distances <- fits[[1]]$rms_cca_distance
   } else {
-    group <- "method"
-    linetype <- NULL
+    all_max_cca_distances <- cbind(fits[[1]]$max_cca_distance,
+                                   name=fits[[1]]$name)
+    all_rms_cca_distances <- cbind(fits[[1]]$rms_cca_distance,
+                                   name=fits[[1]]$name)
+    for (fit in fits[2:length(fits)]) {
+      all_max_cca_distances <- rbind(all_max_cca_distances,
+                                     cbind(fit$max_cca_distance,
+                                           name=fit$name))
+      all_rms_cca_distances <- rbind(all_rms_cca_distances,
+                                     cbind(fit$rms_cca_distance,
+                                           name=fit$name))
+    }
   }
-  ggplot2::ggplot(estimated) +
-    ggplot2::geom_line(ggplot2::aes_string("k",
-                                           "mean",
-                                           group=group,
-                                           color="method",
-                                           linetype=linetype)) +
-    ggplot2::geom_pointrange(ggplot2::aes_string("k",
-                                                 "mean",
-                                                 group=group,
-                                                 color="method",
-                                                 linetype=linetype,
-                                                 ymin="mean - standard_deviation",
-                                                 ymax="mean + standard_deviation"),
-                             shape=1) +
-    ggplot2::scale_x_continuous(breaks=seq(1, max(estimated$k))) +
-    # ggplot2::coord_cartesian(ylim=c(0, 2)) +
-    ggplot2::labs(x="Dimensionality of the feature space of tree structures",
-                  y="Instability of tree structures (mean and SD)")
+  plot_data_frame <- function(title, value_label, data_frame) {
+    if ("name" %in% names(data_frame)) {
+      group <- "name"
+      color <- "name"
+    } else {
+      group <- NULL
+      color <- NULL
+    }
+    ggplot2::ggplot(data_frame) +
+      ggplot2::ggtitle(title) +
+      ggplot2::theme(plot.title=ggplot2::element_text(hjust=0.5),
+                     legend.position="top") +
+      ggplot2::geom_line(
+        ggplot2::aes_string("p",
+                            "mean",
+                            group=group,
+                            color=color)) +
+      ggplot2::geom_pointrange(
+        ggplot2::aes_string("p",
+                            "mean",
+                            group=group,
+                            color=color,
+                            ymin="mean - standard_deviation",
+                            ymax="mean + standard_deviation"),
+        shape=1) +
+      ggplot2::scale_x_continuous(breaks=seq(1, max(data_frame$p))) +
+      # ggplot2::coord_cartesian(ylim=c(0, 2)) +
+      ggplot2::labs(x="p: Dimensionality of the feature space of trees",
+                    y=paste(value_label, "(mean and SD)"))
+  }
+  plot_data_frame("Analysis on the structural instability\nof the estimated trees",
+                  "max_cca_distance",
+                  all_max_cca_distances) +
+    plot_data_frame("Prediction for\nthe number of principal paths",
+                    "rms_cca_distance",
+                    all_rms_cca_distances) +
+    patchwork::plot_layout(nrow=1)
 }

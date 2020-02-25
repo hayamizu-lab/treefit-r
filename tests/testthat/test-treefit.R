@@ -14,7 +14,7 @@ test_that("calculate_distance_matrix", {
 })
 
 test_that("perturbate_knn", {
-  expression <- generate_n_wands_2d_tree_expression(100, 3, 0.1)
+  expression <- generate_2d_n_arms_star_data(100, 3, 0.1)
   n_perturbations <- 5
   strength <- 0.2
   min_diff_mean <- 0.001
@@ -62,4 +62,14 @@ test_that("calculate_mst", {
                              1, 1, 0),
                            ncol=3,
                            byrow=TRUE))
+})
+
+test_that("treefit", {
+  star <- generate_2d_n_arms_star_data(200, 3, 0.1)
+  fit <- treefit(list(expression=star),
+                 "tree-like")
+  expect_equal(list("tree-like",
+                    3),
+               list(fit$name,
+                    fit$n_principal_paths_candidates[1]))
 })
