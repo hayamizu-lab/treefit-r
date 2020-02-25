@@ -577,7 +577,7 @@ plot.treefit <- function(x, ...) {
       ggplot2::labs(x="p: Dimensionality of the feature space of trees",
                     y=paste(value_label, "(mean and SD)"))
   }
-  plot_data_frame("Analysis on the structural instability\nof the estimated trees",
+  plot_data_frame("Analysis of the structural instability\nof the estimated trees",
                   "max_cca_distance",
                   all_max_cca_distances) |
     plot_data_frame("Prediction for\nthe number of principal paths",

@@ -1,7 +1,7 @@
 ---
-title: Working with Seurat
+title: Treefit - Working with Seurat
 vignette: >
-  %\VignetteIndexEntry{Working with Seurat}
+  %\VignetteIndexEntry{Treefit - Working with Seurat}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output: rmarkdown::html_vignette
