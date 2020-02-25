@@ -1,5 +1,5 @@
 Package: treefit
-Title: The first software for quantitative trajectory inference
+Title: The First Software for Quantitative Trajectory Inference
 Version: 1.0.0
 Authors@R: c(
       person(given="Momoko",
