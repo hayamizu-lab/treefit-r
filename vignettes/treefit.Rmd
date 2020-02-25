@@ -28,12 +28,12 @@ Treefit provides some useful functions to generate artificial
 datasets. For example, as we will now demonstrate, the function
 `treefit::generate_2d_n_arms_star_data()` creates data that
 approximately fit a star tree with the number of arms or branches; the
-term star means a tree that looks like the star symbol "*"; for
+term star means a tree that looks like the star symbol "\*"; for
 example, the alphabet letters Y and X can be viewed as star trees that
 have three and four arms, respectively.
 
 The rows and columns of the generated data correspond to data points
-(i.e., <i>n</i> single cells) and their features (<i>i.e.</i>,
+(<i>i.e.</i>, <i>n</i> single cells) and their features (<i>i.e.</i>,
 expression values of <i>d</i> different genes), respectively. The
 Treefit package can be used to analyze both raw count data and
 normalized expression data, but regarding the production of toy data,

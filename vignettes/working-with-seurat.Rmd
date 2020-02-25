@@ -184,9 +184,9 @@ cell types.
 If we compare the mean values of `$max_cca_distance` shown in the left
 panel of Figure 2 with the previous results (`vignette("treefit")`),
 we can see that the tree-likeness of the myoblast dataset is more like
-the noisy tree-like data with the `fatness` 0.8 rather than the
-tree-like data with the `fatness` 0.1. This estimate is reasonable in
-light of the fact that the myoblast dataset in [Trapnell <i>el
+the noisy tree-like data with the `fatness` `0.8` rather than the
+tree-like data with the `fatness` `0.1`. This estimate is reasonable
+in light of the fact that the myoblast dataset in [Trapnell <i>el
 al.</i>, 2014, Nature Biotechnology][trapnell-2014] contains some
 contaminating cell types that are not related to myogenesis.
 

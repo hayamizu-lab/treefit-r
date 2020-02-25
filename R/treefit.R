@@ -514,14 +514,14 @@ treefit <- function(target,
 #'
 #' @examples
 #' # Generate a tree data.
-#' tree <- treefit::generate_2d_n_arms_star_data(300, 3, 0.1)
+#' tree <- treefit::generate_2d_n_arms_star_data(200, 3, 0.1)
 #' # Estimate the goodness-of-fit between tree models and the tree data.
 #' fit <- treefit::treefit(list(expression=tree), "tree")
 #' # Visualize the estimated result.
 #' plot(fit)
 #'
 #' # You can mix multiple estimated results by adding "name" column.
-#' tree2 <- treefit::generate_2d_n_arms_star_data(300, 3, 0.9)
+#' tree2 <- treefit::generate_2d_n_arms_star_data(200, 3, 0.9)
 #' fit2 <- treefit::treefit(list(expression=tree2), "tree2")
 #' plot(fit, fit2)
 #'
