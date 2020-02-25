@@ -1,6 +1,6 @@
 Package: treefit
-Title: Quantitative Analysis Software for Trajectory Inference
-Version: 0.9.0
+Title: The first software for quantitative trajectory inference
+Version: 1.0.0
 Authors@R: c(
       person(given="Momoko",
              family="Hayamizu",
