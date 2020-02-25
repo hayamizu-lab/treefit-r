@@ -13,7 +13,7 @@
 Status: 1 NOTE
 
     * checking CRAN incoming feasibility ... NOTE
-    Maintainer: ‘Momoko Hayamizu <hayamizu@ism.ac.jp>’
+    Maintainer: ‘Kouhei Sutou <kou@clear-code.com>’
 
     New submission
 
@@ -21,5 +21,4 @@ This NOTE is acceptable because this is a new package.
 
 ## revdepcheck results
 
-There are currently no downstream dependencies for this package
-
+There are currently no downstream dependencies for this package.

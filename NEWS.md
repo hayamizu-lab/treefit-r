@@ -1,4 +1,4 @@
-# treefit 0.9.0
+# treefit 1.0.0
 
 The initial release.
 

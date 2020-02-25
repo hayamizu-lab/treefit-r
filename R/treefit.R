@@ -510,6 +510,8 @@ treefit <- function(target,
 #' @param ... The more estimated results to be visualized together or
 #'   other graphical parameters.
 #'
+#' @method plot treefit
+#'
 #' @examples
 #' # Generate a tree data.
 #' tree <- treefit::generate_2d_n_arms_star_data(300, 3, 0.1)
@@ -577,9 +579,8 @@ plot.treefit <- function(x, ...) {
   }
   plot_data_frame("Analysis on the structural instability\nof the estimated trees",
                   "max_cca_distance",
-                  all_max_cca_distances) +
+                  all_max_cca_distances) |
     plot_data_frame("Prediction for\nthe number of principal paths",
                     "rms_cca_distance",
-                    all_rms_cca_distances) +
-    patchwork::plot_layout(nrow=1)
+                    all_rms_cca_distances)
 }
