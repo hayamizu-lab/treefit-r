@@ -16,7 +16,7 @@ learning some basics, we will use Treefit to perform more biologically
 interesting analysis in the next tutorial
 (`vignette("working-with-seurat")`).
 
-## Generating toy data
+## 1. Generating toy data
 
 While the Treefit package has been developed to help biologists who
 wish to perform trajectory inference from single-cell gene expression
@@ -51,7 +51,7 @@ Treefit can be used to generate and analyze high dimensional datasets
 but we focus on generating 2-dimensional data to make things as simple
 as possible in this introductory tutorial.
 
-### Tree-like toy data
+### 1.1. Tree-like toy data
 
 Let us first generate 2-dimensional tree-like data that contain 500
 data points and reasonably fit a star tree with three arms. We can
@@ -63,7 +63,7 @@ star.tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.1)
 plot(star.tree_like)
 ```
 
-### Less tree-like, noisy toy data
+### 1.2. Less tree-like, noisy toy data
 
 Similarly, we can generate noisy data that do not look so tree-like as
 the previous one. In this tutorial, we simply change the value of the
@@ -76,7 +76,7 @@ star.non_tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.8)
 plot(star.non_tree_like)
 ```
 
-## Analyzing the data
+## 2. Analyzing the data
 
 Having generated two datasets whose tree-likeness are different, we
 can analyze each of them. The Treefit package allows us to estimate
@@ -89,7 +89,7 @@ are no longer very tree-like because of the high level of added
 noise. Our goal in this tutorial is to reproduce these conclusions by
 using Treefit.
 
-### Tree-like toy data
+### 2.1. Tree-like toy data
 
 Let us estimate the goodness-of-fit between tree models and the first
 toy data. This can be done by using `treefit::treefit()` as
@@ -116,7 +116,7 @@ interpret the results of the Treefit analysis.
 plot(fit.tree_like)
 ```
 
-### Less tree-like, noisy toy data
+### 2.2. Less tree-like, noisy toy data
 
 We can analyze the second toy data in the same manner.
 
@@ -130,7 +130,7 @@ fit.non_tree_like
 plot(fit.non_tree_like)
 ```
 
-### Comparing two results
+### 2.3. Comparing two results
 
 We can compare different results by passing all results to `plot()` as
 follows:
@@ -139,7 +139,7 @@ follows:
 plot(fit.tree_like, fit.non_tree_like)
 ```
 
-## Interpreting the results
+## 3. Interpreting the results
 
 Before interpreting the previous results, we briefly summarize the
 process of the Treefit analysis that consists of the following three
@@ -178,7 +178,7 @@ connection to canonical correlation analysis (CCA). Treefit provides
 two Grassmann distances `$max_cca_distance` and `$rms_cca_distance`
 that can be used for different purposes as we now explain.
 
-### Estimating the tree-likeness of data
+### 3.1. Estimating the tree-likeness of data
 
 The Treefit analysis using the first Grassmann distance
 `$max_cca_distance` (shown in the left panel of Figure 5) tells us the
@@ -199,7 +199,7 @@ are very robust to noise in the first case but not in the second
 case. Thus, Treefit has verified that the first data are highly
 tree-like while the second data are not.
 
-### Predicting the number of principal paths in the underlying tree
+### 3.2. Predicting the number of principal paths in the underlying tree
 
 The Treefit analysis using the other Grassmann distance
 `$rms_cca_distance` (shown in the right panel of Figure 5) is useful to

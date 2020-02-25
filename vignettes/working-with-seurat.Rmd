@@ -13,7 +13,7 @@ package. If you are not familiar with the basic workflow of Treefit,
 then it would be a good idea to look at the introductory tutorial
 (`vignette("treefit")`) before using it.
 
-## Why "quantitative" trajectory inference?
+## 1. Why "quantitative" trajectory inference?
 
 Single-cell technologies are expected to help us discover a novel type
 of cells and revolutionize our understanding of the process of cell
@@ -46,7 +46,7 @@ how to use Treefit together with Seurat by analyzing the single-cell
 RNA-seq dataset in [Trapnell <i>el al.</i>, 2014, Nature
 Biotechnology][trapnell-2014].
 
-## Trajectory inference using Treefit and Seurat
+## 2. Trajectory inference using Treefit and Seurat
 
 As the Treefit package is meant to be used with gene expression data
 (either raw counts or normalized values) that have been already
@@ -55,7 +55,7 @@ toolkits designed for the quality control of single-cell gene
 expression data (<i>e.g.</i>, filtering cells and normalizing the
 data) before the Treefit analysis.
 
-### Loading the dataset
+### 2.1. Loading the dataset
 
 We analyze the dataset provided in [Trapnell <i>el al.</i>, 2014,
 Nature Biotechnology][trapnell-2014]. This dataset was originally
@@ -83,7 +83,7 @@ if (!file.exists(trapnell.path)) {
 trapnell.dynverse <- readRDS(trapnell.path)
 ```
 
-### Preprocessing with Seurat
+### 2.2. Preprocessing with Seurat
 
 From now, we demonstrate how to preprocess the above data with
 Seurat. In order to handle data in Seurat, we first need to create a
@@ -112,7 +112,7 @@ Seurat. Dynverse uses underscores for gene names but Seurat doesn't
 allow it. Seurat replaces underscores with dashes automatically with
 the warning message.
 
-### Visualization with Seurat
+### 2.3. Visualization with Seurat
 
 Although pictures may not always describe reality, we usually
 visualize data before starting detailed analysis. Here we create a
@@ -143,9 +143,9 @@ data. However, it is difficult to quantify the reliability of this
 tree model and to confidently predict that the best-fit tree consists
 of three principal paths.
 
-## Quantitative trajectory inference with Treefit
+## 3. Quantitative trajectory inference with Treefit
 
-### Performing the Treefit analysis
+### 3.1. Performing the Treefit analysis
 
 Let us use Treefit in order to estimate the tree-likeness of the
 preprocessed myoblast data and to predict the number of principal
@@ -167,7 +167,7 @@ fit.non_tree_like <- treefit::treefit(list(expression=star.non_tree_like),
 plot(trapnell.fit, fit.tree_like, fit.non_tree_like)
 ```
 
-### Interpreting the results
+### 3.2. Interpreting the results
 
 As explained in the previous tutorial (`vignette("treefit")`), the two
 Grassmann distances `$max_cca_distance` and `$rms_cca_distance` play
