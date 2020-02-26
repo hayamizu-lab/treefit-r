@@ -148,9 +148,10 @@ of three principal paths.
 ### 3.1. Performing the Treefit analysis
 
 Let us use Treefit in order to estimate the tree-likeness of the
-preprocessed myoblast data and to predict the number of principal
-paths in the best-fit tree. The workflow is the same as the toy data
-analysis described in the previous tutorial (`vignette("treefit")`).
+preprocessed myoblast data (which contain 290 cells) and to predict
+the number of principal paths in the best-fit tree. The workflow is
+the same as the toy data analysis described in the previous tutorial
+(`vignette("treefit")`).
 
 ```{r estimate}
 trapnell.fit <- treefit::treefit(trapnell)
@@ -158,18 +159,7 @@ trapnell.fit
 ```
 
 ```{r plot, fig.cap="Figure 2. Summary of the Treefit analysis results"}
-# Load the analytsis results in the getting started tutorial.
-if (file.exists("fit.tree_like.rds")) {
-  fit.tree_like <- readRDS("fit.tree_like.rds")
-} else {
-  fit.tree_like <- NULL
-}
-if (file.exists("fit.less_tree_like.rds")) {
-  fit.less_tree_like <- readRDS("fit.less_tree_like.rds")
-} else {
-  fit.less_tree_like <- NULL
-}
-plot(trapnell.fit, fit.tree_like, fit.less_tree_like)
+plot(trapnell.fit)
 ```
 
 ### 3.2. Interpreting the results
