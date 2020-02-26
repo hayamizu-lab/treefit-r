@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Getting started • Treefit for R</title>
+<title>Treefit - Getting started • Treefit for R</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Getting started">
+<meta property="og:title" content="Treefit - Getting started">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://hayamizu-lab.github.io/treefit-r/logo.png">
 <meta name="twitter:card" content="summary">
@@ -65,7 +65,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/working-with-seurat.html">Working with Seurat</a>
+      <a href="../articles/working-with-seurat.html">Treefit - Working with Seurat</a>
     </li>
   </ul>
 </li>
@@ -93,7 +93,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Getting started</h1>
+      <h1>Treefit - Getting started</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/hayamizu-lab/treefit-r/blob/master/vignettes/treefit.Rmd"><code>vignettes/treefit.Rmd</code></a></small>
@@ -106,14 +106,14 @@
 <p>This document is a user-friendly manual on how to use the Treefit package, which is the first toolkit for quantitative trajectory inference using single-cell gene expression data. In this tutorial, we demonstrate how to generate and analyze two kinds of toy data with the aim to help get familiar with the practical workflow of Treefit. After learning some basics, we will use Treefit to perform more biologically interesting analysis in the next tutorial (<code><a href="../articles/working-with-seurat.html">vignette("working-with-seurat")</a></code>).</p>
 <div id="generating-toy-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#generating-toy-data" class="anchor"></a>Generating toy data</h2>
+<a href="#generating-toy-data" class="anchor"></a>1. Generating toy data</h2>
 <p>While the Treefit package has been developed to help biologists who wish to perform trajectory inference from single-cell gene expression data, Treefit can also be viewed as a toolkit to generate and analyze a point cloud in <i>d</i>-dimensional Euclidean space (<i>i.e.</i>, simulated gene expression data).</p>
 <p>Treefit provides some useful functions to generate artificial datasets. For example, as we will now demonstrate, the function <code><a href="../reference/generate_2d_n_arms_star_data.html">treefit::generate_2d_n_arms_star_data()</a></code> creates data that approximately fit a star tree with the number of arms or branches; the term star means a tree that looks like the star symbol “*”; for example, the alphabet letters Y and X can be viewed as star trees that have three and four arms, respectively.</p>
 <p>The rows and columns of the generated data correspond to data points (<i>i.e.</i>, <i>n</i> single cells) and their features (<i>i.e.</i>, expression values of <i>d</i> different genes), respectively. The Treefit package can be used to analyze both raw count data and normalized expression data, but regarding the production of toy data, it is meant to be used to generate continuous data like normalized expression values.</p>
 <p>Importantly, we can generate data with a desired level of noise by changing the value of the <code>fatness</code> parameter of this function. For example, if you set the <code>fatness</code> parameter to <code>0.0</code> then you will get precisely tree-like data without noise. By contrast, setting the <code>fatness</code> to <code>1.0</code> gives very noisy data that are no longer tree-like. In this tutorial, we deal with two types of toy data whose <code>fatness</code> values are <code>0.1</code> and <code>0.8</code>, respectively. We note that Treefit can be used to generate and analyze high dimensional datasets but we focus on generating 2-dimensional data to make things as simple as possible in this introductory tutorial.</p>
 <div id="tree-like-toy-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#tree-like-toy-data" class="anchor"></a>Tree-like toy data</h3>
+<a href="#tree-like-toy-data" class="anchor"></a>1.1. Tree-like toy data</h3>
 <p>Let us first generate 2-dimensional tree-like data that contain 500 data points and reasonably fit a star tree with three arms. We can create such data and draw a scatter plot of them (Figure 1) simply by executing the following two lines of code:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">star.tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/generate_2d_n_arms_star_data.html">generate_2d_n_arms_star_data</a></span>(<span class="dv">500</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(star.tree_like)</a></code></pre></div>
@@ -125,12 +125,12 @@ Figure 1. A scatter plot of tree-like toy data generated by Treefit
 </div>
 <div id="less-tree-like-noisy-toy-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#less-tree-like-noisy-toy-data" class="anchor"></a>Less tree-like, noisy toy data</h3>
+<a href="#less-tree-like-noisy-toy-data" class="anchor"></a>1.2. Less tree-like, noisy toy data</h3>
 <p>Similarly, we can generate noisy data that do not look so tree-like as the previous one. In this tutorial, we simply change the value of the <code>fatness</code> parameter from <code>0.1</code> to <code>0.8</code> in order to obtain non-tree-like data. The following two lines of code yields a scatter plot shown in Figure 2:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">star.non_tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/generate_2d_n_arms_star_data.html">generate_2d_n_arms_star_data</a></span>(<span class="dv">500</span>, <span class="dv">3</span>, <span class="fl">0.8</span>)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(star.non_tree_like)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">star.less_tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/generate_2d_n_arms_star_data.html">generate_2d_n_arms_star_data</a></span>(<span class="dv">500</span>, <span class="dv">3</span>, <span class="fl">0.8</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(star.less_tree_like)</a></code></pre></div>
 <div class="figure">
-<img src="treefit_files/figure-html/generate-non-tree-like-data-1.png" alt="Figure 2. A scatter plot of noisy toy data generated by Treefit" width="700"><p class="caption">
+<img src="treefit_files/figure-html/generate-less-tree-like-data-1.png" alt="Figure 2. A scatter plot of noisy toy data generated by Treefit" width="700"><p class="caption">
 Figure 2. A scatter plot of noisy toy data generated by Treefit
 </p>
 </div>
@@ -138,11 +138,11 @@ Figure 2. A scatter plot of noisy toy data generated by Treefit
 </div>
 <div id="analyzing-the-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#analyzing-the-data" class="anchor"></a>Analyzing the data</h2>
+<a href="#analyzing-the-data" class="anchor"></a>2. Analyzing the data</h2>
 <p>Having generated two datasets whose tree-likeness are different, we can analyze each of them. The Treefit package allows us to estimate how well the data can be explained by tree models and to predict how many “principal paths” there are in the best-fit tree. As shown in Figure 1, the points in the first data clearly form a shape like the letter “Y” and so the data are considered to fit a star tree with three arms very well, whereas Figure 2 indicates that the second data are no longer very tree-like because of the high level of added noise. Our goal in this tutorial is to reproduce these conclusions by using Treefit.</p>
 <div id="tree-like-toy-data-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#tree-like-toy-data-1" class="anchor"></a>Tree-like toy data</h3>
+<a href="#tree-like-toy-data-1" class="anchor"></a>2.1. Tree-like toy data</h3>
 <p>Let us estimate the goodness-of-fit between tree models and the first toy data. This can be done by using <code><a href="../reference/treefit.html">treefit::treefit()</a></code> as follows. The <code>name</code> parameter is optional but we should specify it, if possible. Because it’s useful to identify the estimation.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">fit.tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/treefit.html">treefit</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">expression=</span>star.tree_like),</a>
 <a class="sourceLine" id="cb3-2" title="2">                                  <span class="dt">name=</span><span class="st">"tree-like"</span>)</a>
@@ -152,52 +152,52 @@ Figure 2. A scatter plot of noisy toy data generated by Treefit
 ## 
 ## $max_cca_distance
 ##     p       mean standard_deviation
-## 1   1 0.48960184        0.250754031
-## 2   2 0.06797244        0.011015494
-## 3   3 0.06093694        0.008653770
-## 4   4 0.05645535        0.006426252
-## 5   5 0.05393660        0.005901001
-## 6   6 0.05113539        0.006034016
-## 7   7 0.04920572        0.006217074
-## 8   8 0.04630574        0.005753211
-## 9   9 0.04498995        0.005764319
-## 10 10 0.04344356        0.005857539
-## 11 11 0.04221487        0.005949640
-## 12 12 0.04137530        0.006149567
-## 13 13 0.04053387        0.006088897
-## 14 14 0.03975863        0.006128403
-## 15 15 0.03854865        0.005967853
-## 16 16 0.03767359        0.005758105
-## 17 17 0.03632398        0.005522746
-## 18 18 0.03567428        0.005545115
-## 19 19 0.03520411        0.005574441
-## 20 20 0.03432952        0.005659677
+## 1   1 0.22596644        0.131369439
+## 2   2 0.06654401        0.008720935
+## 3   3 0.06104865        0.007974235
+## 4   4 0.05706521        0.006685047
+## 5   5 0.05437292        0.005925095
+## 6   6 0.05240580        0.005555954
+## 7   7 0.05037415        0.005343806
+## 8   8 0.04874842        0.005506639
+## 9   9 0.04746295        0.005377301
+## 10 10 0.04596835        0.005274989
+## 11 11 0.04439535        0.005232126
+## 12 12 0.04347351        0.005261102
+## 13 13 0.04260412        0.005208329
+## 14 14 0.04199325        0.005269242
+## 15 15 0.04102906        0.005411027
+## 16 16 0.04036370        0.005424262
+## 17 17 0.03956672        0.005349805
+## 18 18 0.03882964        0.005372703
+## 19 19 0.03792751        0.005462420
+## 20 20 0.03727894        0.005484570
 ## 
 ## $rms_cca_distance
-##     p        mean standard_deviation
-## 1   1 0.300341916        0.263643043
-## 2   2 0.005946873        0.001815928
-## 3   3 0.012553817        0.004048391
-## 4   4 0.063392296        0.048677230
-## 5   5 0.020175693        0.005928756
-## 6   6 0.028961797        0.006009952
-## 7   7 0.060355875        0.024551930
-## 8   8 0.047747965        0.008522872
-## 9   9 0.076654908        0.021577155
-## 10 10 0.085121450        0.023490543
-## 11 11 0.074686250        0.012547789
-## 12 12 0.093994006        0.017426241
-## 13 13 0.120029120        0.024326965
-## 14 14 0.136628031        0.027832534
-## 15 15 0.155400022        0.027879295
-## 16 16 0.167872602        0.026207549
-## 17 17 0.176047035        0.026677573
-## 18 18 0.191508676        0.029329476
-## 19 19 0.197521864        0.035142032
-## 20 20 0.208709240        0.036119738
+##     p       mean standard_deviation
+## 1   1 0.06822793        0.078350065
+## 2   2 0.00645674        0.001935635
+## 3   3 0.01204046        0.003467894
+## 4   4 0.05506443        0.042621997
+## 5   5 0.02325940        0.006851026
+## 6   6 0.03097093        0.008089125
+## 7   7 0.05894464        0.026372548
+## 8   8 0.05391623        0.014313603
+## 9   9 0.06934991        0.016650306
+## 10 10 0.09459052        0.026868812
+## 11 11 0.09732465        0.026900586
+## 12 12 0.09934220        0.017596909
+## 13 13 0.12834631        0.021626170
+## 14 14 0.14474796        0.022605777
+## 15 15 0.13380273        0.021931032
+## 16 16 0.16489061        0.022067820
+## 17 17 0.18149808        0.020683156
+## 18 18 0.19342085        0.023602897
+## 19 19 0.20719369        0.023151799
+## 20 20 0.21319506        0.024019501
 ## 
 ## $n_principal_paths_candidates
-## [1]  3  6  9 12
+## [1]  3  6  9 16
 ## 
 ## attr(,"class")
 ## [1] "treefit"</code></pre>
@@ -212,77 +212,77 @@ Figure 3. The output for the tree-like data shown in Figure 1
 </div>
 <div id="less-tree-like-noisy-toy-data-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#less-tree-like-noisy-toy-data-1" class="anchor"></a>Less tree-like, noisy toy data</h3>
+<a href="#less-tree-like-noisy-toy-data-1" class="anchor"></a>2.2. Less tree-like, noisy toy data</h3>
 <p>We can analyze the second toy data in the same manner.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">fit.non_tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/treefit.html">treefit</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">expression=</span>star.non_tree_like),</a>
-<a class="sourceLine" id="cb6-2" title="2">                                      <span class="dt">name=</span><span class="st">"non-tree-like"</span>)</a>
-<a class="sourceLine" id="cb6-3" title="3">fit.non_tree_like</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">fit.less_tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/treefit.html">treefit</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">expression=</span>star.less_tree_like),</a>
+<a class="sourceLine" id="cb6-2" title="2">                                      <span class="dt">name=</span><span class="st">"less-tree-like"</span>)</a>
+<a class="sourceLine" id="cb6-3" title="3">fit.less_tree_like</a></code></pre></div>
 <pre><code>## $name
-## [1] "non-tree-like"
+## [1] "less-tree-like"
 ## 
 ## $max_cca_distance
 ##     p      mean standard_deviation
-## 1   1 0.7481998         0.17672465
-## 2   2 0.3635522         0.06467833
-## 3   3 0.3076542         0.04748980
-## 4   4 0.2650996         0.04043983
-## 5   5 0.2415602         0.03872376
-## 6   6 0.2366267         0.03813973
-## 7   7 0.2197831         0.03371400
-## 8   8 0.2091998         0.03545717
-## 9   9 0.1910267         0.03571813
-## 10 10 0.1769065         0.04006218
-## 11 11 0.1650669         0.03823446
-## 12 12 0.1599121         0.03643656
-## 13 13 0.1498167         0.03491440
-## 14 14 0.1418586         0.03243972
-## 15 15 0.1370540         0.03182253
-## 16 16 0.1330510         0.02963273
-## 17 17 0.1297435         0.03019461
-## 18 18 0.1268192         0.02927293
-## 19 19 0.1225869         0.02809337
-## 20 20 0.1190663         0.02714599
+## 1   1 0.6791411         0.21269644
+## 2   2 0.3281294         0.06294319
+## 3   3 0.2937990         0.05528991
+## 4   4 0.2774734         0.05252662
+## 5   5 0.2540611         0.04692745
+## 6   6 0.2327823         0.04253976
+## 7   7 0.2124666         0.04229612
+## 8   8 0.2018415         0.03749598
+## 9   9 0.1919281         0.03433777
+## 10 10 0.1801408         0.03177917
+## 11 11 0.1721367         0.03054401
+## 12 12 0.1632324         0.02969724
+## 13 13 0.1584631         0.02912984
+## 14 14 0.1530006         0.02648883
+## 15 15 0.1474552         0.02541587
+## 16 16 0.1410868         0.02394288
+## 17 17 0.1355738         0.02268048
+## 18 18 0.1319197         0.02237975
+## 19 19 0.1276560         0.02177896
+## 20 20 0.1230736         0.02212501
 ## 
 ## $rms_cca_distance
 ##     p      mean standard_deviation
-## 1   1 0.5899191         0.24754933
-## 2   2 0.2307168         0.05893373
-## 3   3 0.3240751         0.06572221
-## 4   4 0.3534941         0.10059064
-## 5   5 0.4219402         0.08241628
-## 6   6 0.4271390         0.06309383
-## 7   7 0.4304035         0.07064614
-## 8   8 0.4320700         0.07128785
-## 9   9 0.4202540         0.06387598
-## 10 10 0.4134304         0.04401047
-## 11 11 0.4165055         0.04067546
-## 12 12 0.4145483         0.03808106
-## 13 13 0.4206354         0.03912658
-## 14 14 0.4182310         0.03440566
-## 15 15 0.4106080         0.03149820
-## 16 16 0.4114340         0.03082665
-## 17 17 0.4070712         0.03143606
-## 18 18 0.3992207         0.03586383
-## 19 19 0.3946334         0.03333025
-## 20 20 0.3867418         0.02950937
+## 1   1 0.5062343         0.28833871
+## 2   2 0.1950086         0.08847534
+## 3   3 0.3455653         0.08626334
+## 4   4 0.3990795         0.07600929
+## 5   5 0.4239944         0.07565372
+## 6   6 0.4352736         0.07328852
+## 7   7 0.4482049         0.06061554
+## 8   8 0.4465194         0.05640291
+## 9   9 0.4387855         0.05258550
+## 10 10 0.4346610         0.05127156
+## 11 11 0.4338550         0.05140223
+## 12 12 0.4325893         0.04884063
+## 13 13 0.4255882         0.04505665
+## 14 14 0.4214152         0.04370296
+## 15 15 0.4184190         0.04294220
+## 16 16 0.4133813         0.04308140
+## 17 17 0.4086389         0.04173956
+## 18 18 0.4071760         0.04076939
+## 19 19 0.4051143         0.03926657
+## 20 20 0.4045444         0.03747649
 ## 
 ## $n_principal_paths_candidates
-## [1]  3 11 13 16
+## [1] 3
 ## 
 ## attr(,"class")
 ## [1] "treefit"</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.non_tree_like)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.less_tree_like)</a></code></pre></div>
 <div class="figure">
-<img src="treefit_files/figure-html/plot-non-tree-like-data-estimation-result-1.png" alt="Figure 4. The output for the noisy data shown in Figure 2" width="700"><p class="caption">
+<img src="treefit_files/figure-html/plot-less-tree-like-data-estimation-result-1.png" alt="Figure 4. The output for the noisy data shown in Figure 2" width="700"><p class="caption">
 Figure 4. The output for the noisy data shown in Figure 2
 </p>
 </div>
 </div>
 <div id="comparing-two-results" class="section level3">
 <h3 class="hasAnchor">
-<a href="#comparing-two-results" class="anchor"></a>Comparing two results</h3>
+<a href="#comparing-two-results" class="anchor"></a>2.3. Comparing two results</h3>
 <p>We can compare different results by passing all results to <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> as follows:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.tree_like, fit.non_tree_like)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.tree_like, fit.less_tree_like)</a></code></pre></div>
 <div class="figure">
 <img src="treefit_files/figure-html/plot-estimation-results-1.png" alt="Figure 5. Comparison of the plots shown in Figure 3 and Figure 4." width="700"><p class="caption">
 Figure 5. Comparison of the plots shown in Figure 3 and Figure 4.
@@ -292,7 +292,7 @@ Figure 5. Comparison of the plots shown in Figure 3 and Figure 4.
 </div>
 <div id="interpreting-the-results" class="section level2">
 <h2 class="hasAnchor">
-<a href="#interpreting-the-results" class="anchor"></a>Interpreting the results</h2>
+<a href="#interpreting-the-results" class="anchor"></a>3. Interpreting the results</h2>
 <p>Before interpreting the previous results, we briefly summarize the process of the Treefit analysis that consists of the following three steps.</p>
 <ol style="list-style-type: decimal">
 <li><p>First, Treefit repeatedly “perturbs” the input data (<i>i.e.</i>, adds some small noise to the original row count data or normalized expression data) in order to produce many slightly different datasets that may have been acquired in the biological experiment.</p></li>
@@ -302,13 +302,13 @@ Figure 5. Comparison of the plots shown in Figure 3 and Figure 4.
 <p>Although the word “Grassmann distance” may sound so unfamiliar to some readers, the concept appears in different disguises in various practical contexts. For example, the Grassmann distance has a close connection to canonical correlation analysis (CCA). Treefit provides two Grassmann distances <code>$max_cca_distance</code> and <code>$rms_cca_distance</code> that can be used for different purposes as we now explain.</p>
 <div id="estimating-the-tree-likeness-of-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#estimating-the-tree-likeness-of-data" class="anchor"></a>Estimating the tree-likeness of data</h3>
+<a href="#estimating-the-tree-likeness-of-data" class="anchor"></a>3.1. Estimating the tree-likeness of data</h3>
 <p>The Treefit analysis using the first Grassmann distance <code>$max_cca_distance</code> (shown in the left panel of Figure 5) tells us the goodness-of-fit between data and tree models. In principle, as mentioned earlier, if the mean and SD of <code>$max_cca_distance</code> are small, then this means that the estimated trees are mutually similar in their structure. As can be observed, the distance changes according to the dimensionality <i>p</i> of the feature space, but <code>$max_cca_distance</code> has the property that the value decreases monotonically as <i>p</i> increases for any datasets.</p>
 <p>Comparing the Treefit results for the two datasets, we see that the mean Grassmann distance for the first data does not fall below the second one regardless of the value of <i>p</i> and that the SD of the Grassmann distance for the first data is very small compared to the second data. These results imply that the estimated tree structures are very robust to noise in the first case but not in the second case. Thus, Treefit has verified that the first data are highly tree-like while the second data are not.</p>
 </div>
 <div id="predicting-the-number-of-principal-paths-in-the-underlying-tree" class="section level3">
 <h3 class="hasAnchor">
-<a href="#predicting-the-number-of-principal-paths-in-the-underlying-tree" class="anchor"></a>Predicting the number of principal paths in the underlying tree</h3>
+<a href="#predicting-the-number-of-principal-paths-in-the-underlying-tree" class="anchor"></a>3.2. Predicting the number of principal paths in the underlying tree</h3>
 <p>The Treefit analysis using the other Grassmann distance <code>$rms_cca_distance</code> (shown in the right panel of Figure 5) is useful to infer the number of “principal paths” in the best-fit tree. From a biological perspective, this analysis can be used to discover a novel or unexpected cell type from single-cell gene expression (for details, see <code><a href="../articles/working-with-seurat.html">vignette("working-with-seurat")</a></code>).</p>
 <p>Unlike the previous Grassmann distance, the mean value of <code>$rms_cca_distance</code> can fluctuate depending on the value of <i>p</i>. Interestingly, we can predict the number of principal paths in the best-fit tree by exploring for which <i>p</i> the distance value reaches “the bottom of a valley” (<i>i.e.</i>, attains a local minimum). More precisely, when <code>$rms_cca_distance</code> attains a local minimum at a certain <i>p</i>, the value <i>p</i>+1 indicates the number of principal paths in the best-fit tree. <code>$n_principal_paths_candidates</code> has these <i>p</i>+1 values. We don’t need to calculate them manually. When Treefit produces a plot having more than one valleys, the smallest <i>p</i> is usually most informative for the prediction. The smallest <i>p</i>+1 value can be obtained by <code>$n_principal_paths_candidates[1]</code>.</p>
 <p>Comparing the Treefit results for the two datasets, we first see that both plots attains a local minimum at <i>p</i>=2. This means that for both datasets the best-fit tree has <i>p</i>+1=3 principle paths, which is correct because both were generated from the same star tree with three arms. Another important point to be made is that the SD of the Grassmann distance for the first data is very small at <i>p</i>=2 compared to that for the second data; in other words, Treefit made this prediction more confidently for the first dataset than for the second one. This result is reasonable because the first dataset is much less noisy than the second one. Thus, Treefit has correctly determined the number of principal paths in the underlying tree together with the goodness-of-fit for each dataset.</p>
@@ -322,9 +322,25 @@ Figure 5. Comparison of the plots shown in Figure 3 and Figure 4.
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#generating-toy-data">Generating toy data</a></li>
-      <li><a href="#analyzing-the-data">Analyzing the data</a></li>
-      <li><a href="#interpreting-the-results">Interpreting the results</a></li>
+<li>
+<a href="#generating-toy-data">1. Generating toy data</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#tree-like-toy-data">1.1. Tree-like toy data</a></li>
+      <li><a href="#less-tree-like-noisy-toy-data">1.2. Less tree-like, noisy toy data</a></li>
+      </ul>
+</li>
+      <li>
+<a href="#analyzing-the-data">2. Analyzing the data</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#tree-like-toy-data-1">2.1. Tree-like toy data</a></li>
+      <li><a href="#less-tree-like-noisy-toy-data-1">2.2. Less tree-like, noisy toy data</a></li>
+      <li><a href="#comparing-two-results">2.3. Comparing two results</a></li>
+      </ul>
+</li>
+      <li>
+<a href="#interpreting-the-results">3. Interpreting the results</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#estimating-the-tree-likeness-of-data">3.1. Estimating the tree-likeness of data</a></li>
+      <li><a href="#predicting-the-number-of-principal-paths-in-the-underlying-tree">3.2. Predicting the number of principal paths in the underlying tree</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>
