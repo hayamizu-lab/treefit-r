@@ -90,7 +90,7 @@ calculate_low_dimension_laplacian_eigenvectors <- function(mst, p) {
   low_dimension_vectors <-
     e$vectors[, n_target_vectors:(n_target_vectors - p + 1)]
   if (anyDuplicated(low_dimension_values)) {
-    message(paste("low dimension eigenvalues have no duplicated values: ",
+    message(paste("low dimension eigenvalues have duplicated values: ",
                   toString(low_dimension_values),
                   "\n",
                   sep=""))
