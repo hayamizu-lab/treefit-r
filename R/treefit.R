@@ -240,7 +240,11 @@ calculate_eigenvectors_list <- function(original,
     }
     if (is_seurat(original)) {
       default_assay_name <- Seurat::DefaultAssay(original)
-      counts <- t(as.matrix(Seurat::GetAssayData(original, "counts")))
+      seurat_counts <- Seurat::GetAssayData(original, "counts")
+      counts <- t(as.matrix(seurat_counts))
+      assay_name <- paste0(default_assay_name, "Original")
+      original[[assay_name]] <- Seurat::CreateAssayObject(counts=seurat_counts)
+      targets <- c(targets, list(assay_name))
       for (i in 1:n_perturbations) {
         assay_name <- paste0(default_assay_name, "Perturbed", i)
         perturbated_counts <- perturbate_poisson(counts, poisson_strength)
@@ -249,6 +253,7 @@ calculate_eigenvectors_list <- function(original,
         targets <- c(targets, list(assay_name))
       }
     } else if (!is.null(original$counts)) {
+      targets <- c(targets, list(original$counts))
       for (i in 1:n_perturbations) {
         perturbated_counts <- perturbate_poisson(original$counts,
                                                  poisson_strength)
@@ -284,6 +289,7 @@ calculate_eigenvectors_list <- function(original,
         stop(paste("no expression data:", original))
       }
 
+      targets <- c(targets, list(original$expression))
       for (i in 1:n_perturbations) {
         perturbated_expression <-
           perturbate_knn(original$expression, knn_strength)
@@ -445,14 +451,12 @@ treefit <- function(target,
   rms_cca_distance.means <- c()
   rms_cca_distance.standard_deviations <- c()
   for (p in 1:max_p) {
-    eigenvectors_pairs <- utils::combn(1:length(eigenvectors_list), 2)
-    n_eigenvectors_pairs <- ncol(eigenvectors_pairs)
     ps <- c(ps, p)
     max_cca_distance.values <- c()
     rms_cca_distance.values <- c()
-    for (i in 1:n_eigenvectors_pairs) {
-      u <- eigenvectors_list[[eigenvectors_pairs[1, i]]][, 1:p]
-      v <- eigenvectors_list[[eigenvectors_pairs[2, i]]][, 1:p]
+    for (i in 2:(length(eigenvectors_list))) {
+      u <- eigenvectors_list[[1]][, 1:p]
+      v <- eigenvectors_list[[i]][, 1:p]
       canonical_correlation <- calculate_canonical_correlation(u, v)
       max_cca_distance.values <-
         c(max_cca_distance.values,
