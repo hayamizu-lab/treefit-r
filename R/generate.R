@@ -23,8 +23,8 @@
 #' # Generate a 2-dimensional star tree data that contain 600 data points
 #' # and fit a star tree with 5 arms. The generated data are very noisy and
 #' # less tree-like.
-#' star.non_tree_like <- treefit::generate_2d_n_arms_star_data(600, 5, 0.9)
-#' plot(star.non_tree_like)
+#' star.less_tree_like <- treefit::generate_2d_n_arms_star_data(600, 5, 0.9)
+#' plot(star.less_tree_like)
 #'
 #' @export
 generate_2d_n_arms_star_data <- function(n_samples, n_arms, fatness) {
@@ -84,11 +84,11 @@ generate_2d_n_arms_star_data <- function(n_samples, n_arms, fatness) {
 #' # Generate a 2-dimensional linked star tree data that contain
 #' # 300-200 data points and fit a linked star tree with 4-3 arms.
 #' # The generated data are very noisy and less tree-like.
-#' linked_star.non_tree_like <-
+#' linked_star.less_tree_like <-
 #'   treefit::generate_2d_n_arms_linked_star_data(c(300, 200),
 #'                                                c(4, 3),
 #'                                                0.9)
-#' plot(linked_star.non_tree_like)
+#' plot(linked_star.less_tree_like)
 #'
 #' @export
 generate_2d_n_arms_linked_star_data <- function(n_samples_vector,

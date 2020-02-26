@@ -161,10 +161,10 @@ trapnell.fit
 star.tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.1)
 fit.tree_like <- treefit::treefit(list(expression=star.tree_like),
                                   name="tree-like")
-star.non_tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.8)
-fit.non_tree_like <- treefit::treefit(list(expression=star.non_tree_like),
-                                      name="non-tree-like")
-plot(trapnell.fit, fit.tree_like, fit.non_tree_like)
+star.less_tree_like <- treefit::generate_2d_n_arms_star_data(500, 3, 0.8)
+fit.less_tree_like <- treefit::treefit(list(expression=star.non_tree_like),
+                                       name="less-tree-like")
+plot(trapnell.fit, fit.tree_like, fit.less_tree_like)
 ```
 
 ### 3.2. Interpreting the results

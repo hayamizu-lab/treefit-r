@@ -120,14 +120,14 @@ plot(fit.tree_like)
 
 We can analyze the second toy data in the same manner.
 
-```{r estimate-non-tree-like-data}
-fit.non_tree_like <- treefit::treefit(list(expression=star.non_tree_like),
-                                      name="non-tree-like")
-fit.non_tree_like
+```{r estimate-less-tree-like-data}
+fit.less_tree_like <- treefit::treefit(list(expression=star.non_tree_like),
+                                      name="less-tree-like")
+fit.less_tree_like
 ```
 
-```{r plot-non-tree-like-data-estimation-result, fig.cap="Figure 4. The output for the noisy data shown in Figure 2"}
-plot(fit.non_tree_like)
+```{r plot-less-tree-like-data-estimation-result, fig.cap="Figure 4. The output for the noisy data shown in Figure 2"}
+plot(fit.less_tree_like)
 ```
 
 ### 2.3. Comparing two results
@@ -136,7 +136,7 @@ We can compare different results by passing all results to `plot()` as
 follows:
 
 ```{r plot-estimation-results, fig.cap="Figure 5. Comparison of the plots shown in Figure 3 and Figure 4."}
-plot(fit.tree_like, fit.non_tree_like)
+plot(fit.tree_like, fit.less_tree_like)
 ```
 
 ## 3. Interpreting the results
