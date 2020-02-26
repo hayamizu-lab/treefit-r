@@ -2,6 +2,9 @@ url: https://hayamizu-lab.github.io/treefit-r
 
 title: Treefit for R
 
+toc:
+  depth: 3
+
 home:
   title: Treefit for R - Quantitative analysis software for trajectory inference
   links:
