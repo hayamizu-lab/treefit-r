@@ -15,8 +15,34 @@ def version
   nil
 end
 
+def development_version?
+  version.end_with?(".9000")
+end
+
 def doc_dir
-  "docs/#{version}"
+  if development_version?
+    "docs/dev"
+  else
+    "docs/#{version}"
+  end
+end
+
+def latest_doc_dir
+  "docs/latest"
+end
+
+def generate_document(dir)
+  rm_rf(dir)
+  sh("Rscript",
+     "-e",
+     "pkgdown::build_site(override=list(destination=\"#{dir}\"))")
+end
+
+namespace :doc do
+  desc "Generate document"
+  task :generate do
+    generate_document(doc_dir)
+  end
 end
 
 desc "Release"
@@ -25,11 +51,10 @@ task :release do
   sh("Rscript", "-e", "devtools::spell_check()")
   sh("R", "CMD", "build", ".")
   sh("R", "CMD", "check", "treefit_#{version}.tar.gz", "--as-cran")
-  rm_rf(doc_dir)
-  sh("Rscript",
-     "-e",
-     "pkgdown::build_site(override=list(destination=\"#{doc_dir}\"))")
+  generate_document(doc_dir)
   sh("git", "add", doc_dir)
+  generate_document(latest_doc_dir)
+  sh("git", "add", latest_doc_dir)
 end
 
 desc "Tag"
