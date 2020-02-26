@@ -538,7 +538,7 @@ treefit <- function(target,
 #'
 #' @export
 plot.treefit <- function(x, ...) {
-  fits <- list(x, ...)
+  fits <- Filter(Negate(is.null), list(x, ...))
   if (length(fits) == 1) {
     all_max_cca_distances <- fits[[1]]$max_cca_distance
     all_rms_cca_distances <- fits[[1]]$rms_cca_distance
