@@ -227,9 +227,8 @@ calculate_eigenvectors_list <- function(original,
                                         reduce_dimension,
                                         build_tree,
                                         max_p,
-                                        verbose) {
-  n_perturbations <- 8
-  ## n_perturbations <- 2
+                                        verbose,
+                                        n_perturbations) {
   poisson_strength <- 1.0
   # TODO: Improve
   knn_strength <- 0.2 * (500 / 200) ** 0.5
@@ -390,6 +389,10 @@ calculate_eigenvectors_list <- function(original,
 #'
 #'   The default is `FALSE`
 #'
+#' @param n_perturbations How many times to perturb.
+#'
+#'   The default is 20.
+#'
 #' @return An estimated result as a `treefit` object. It has the
 #'   following elements:
 #'
@@ -423,14 +426,16 @@ treefit <- function(target,
                     reduce_dimension=NULL,
                     build_tree=NULL,
                     max_p=20,
-                    verbose=FALSE) {
+                    verbose=FALSE,
+                    n_perturbations=20) {
   eigenvectors_list <- calculate_eigenvectors_list(target,
                                                    perturbations,
                                                    normalize,
                                                    reduce_dimension,
                                                    build_tree,
                                                    max_p,
-                                                   verbose)
+                                                   verbose,
+                                                   n_perturbations)
   if (is.null(name)) {
     name <- deparse(substitute(target))
   }
