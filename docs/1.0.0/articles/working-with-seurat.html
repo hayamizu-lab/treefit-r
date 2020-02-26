@@ -225,13 +225,18 @@ Figure 1. The result of PCA for the myoblast dataset
 ## 
 ## attr(,"class")
 ## [1] "treefit"</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">star.tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/generate_2d_n_arms_star_data.html">generate_2d_n_arms_star_data</a></span>(<span class="dv">500</span>, <span class="dv">3</span>, <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb7-2" title="2">fit.tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/treefit.html">treefit</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">expression=</span>star.tree_like),</a>
-<a class="sourceLine" id="cb7-3" title="3">                                  <span class="dt">name=</span><span class="st">"tree-like"</span>)</a>
-<a class="sourceLine" id="cb7-4" title="4">star.less_tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/generate_2d_n_arms_star_data.html">generate_2d_n_arms_star_data</a></span>(<span class="dv">500</span>, <span class="dv">3</span>, <span class="fl">0.8</span>)</a>
-<a class="sourceLine" id="cb7-5" title="5">fit.less_tree_like &lt;-<span class="st"> </span>treefit<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/treefit/man/treefit.html">treefit</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">expression=</span>star.less_tree_like),</a>
-<a class="sourceLine" id="cb7-6" title="6">                                       <span class="dt">name=</span><span class="st">"less-tree-like"</span>)</a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(trapnell.fit, fit.tree_like, fit.less_tree_like)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># Load the analytsis results in the getting started tutorial.</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="st">"fit.tree_like.rds"</span>)) {</a>
+<a class="sourceLine" id="cb7-3" title="3">  fit.tree_like &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="st">"fit.tree_like.rds"</span>)</a>
+<a class="sourceLine" id="cb7-4" title="4">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb7-5" title="5">  fit.tree_like &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb7-6" title="6">}</a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="st">"fit.less_tree_like.rds"</span>)) {</a>
+<a class="sourceLine" id="cb7-8" title="8">  fit.less_tree_like &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="st">"fit.less_tree_like.rds"</span>)</a>
+<a class="sourceLine" id="cb7-9" title="9">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb7-10" title="10">  fit.less_tree_like &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb7-11" title="11">}</a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(trapnell.fit, fit.tree_like, fit.less_tree_like)</a></code></pre></div>
 <div class="figure">
 <img src="working-with-seurat_files/figure-html/plot-1.png" alt="Figure 2. Summary of the Treefit analysis results" width="700"><p class="caption">
 Figure 2. Summary of the Treefit analysis results
