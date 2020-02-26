@@ -64,7 +64,17 @@ test_that("calculate_mst", {
                            byrow=TRUE))
 })
 
-test_that("treefit", {
+test_that("treefit: 2 arms", {
+  star <- generate_2d_n_arms_star_data(200, 2, 0.1)
+  fit <- treefit(list(expression=star),
+                 "tree-like")
+  expect_equal(list("tree-like",
+                    2),
+               list(fit$name,
+                    fit$n_principal_paths_candidates[1]))
+})
+
+test_that("treefit: 3 arms", {
   star <- generate_2d_n_arms_star_data(200, 3, 0.1)
   fit <- treefit(list(expression=star),
                  "tree-like")

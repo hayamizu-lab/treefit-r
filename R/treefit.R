@@ -472,7 +472,7 @@ treefit <- function(target,
   n_principal_paths_candidates <- c()
   for (p in 1:(max_p - 1)) {
     if (p == 1) {
-      rms_cca_distance_mean_before <- 0
+      rms_cca_distance_mean_before <- Inf
     } else {
       rms_cca_distance_mean_before <- rms_cca_distance.means[p - 1]
     }
