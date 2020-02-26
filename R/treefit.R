@@ -558,7 +558,8 @@ plot.treefit <- function(x, ...) {
     ggplot2::ggplot(data_frame) +
       ggplot2::ggtitle(title) +
       ggplot2::theme(plot.title=ggplot2::element_text(hjust=0.5),
-                     legend.position="top") +
+                     legend.position="top",
+                     legend.title=ggplot2::element_blank()) +
       ggplot2::geom_line(
         ggplot2::aes_string("p",
                             "mean",
