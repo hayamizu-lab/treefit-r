@@ -27,10 +27,6 @@ def doc_dir
   end
 end
 
-def latest_doc_dir
-  "docs/latest"
-end
-
 def generate_document(dir)
   rm_rf(dir)
   sh("Rscript",
@@ -53,8 +49,6 @@ task :release do
   sh("R", "CMD", "check", "treefit_#{version}.tar.gz", "--as-cran")
   generate_document(doc_dir)
   sh("git", "add", doc_dir)
-  generate_document(latest_doc_dir)
-  sh("git", "add", latest_doc_dir)
 end
 
 desc "Tag"

@@ -10,5 +10,7 @@ home:
   links:
     - text: <b>Treefit</b> details
       href: https://hayamizu-lab.github.io/treefit/
+    - text: The latest Treefit for R
+      href: https://hayamizu-lab.github.io/treefit-r/
     - text: Treefit for Python
       href: https://hayamizu-lab.github.io/treefit-python/
