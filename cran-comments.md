@@ -10,11 +10,14 @@ This is a resubmission.
 > change the reference to "GPL-3 + file LICENSE" and change the file
 > LICENSE to *only* contain the additional restrictions.
 
-We don't have additional restrictions. So we changed "GPL (>= 3) |
+We don't have additional restrictions. So we've changed "GPL (>= 3) |
 file LICENSE" to "GPL (>= 3)".
 
 > message() is easily suppressed. You don't need to ask the user for
 > permission to use it.
+
+We've removed the "verbose" argument to control whether calling
+message() or not. And we've also removed needless message()s.
 
 > Please add \value to all .Rd files that are not data files and explain
 > the functions results in the documentation.

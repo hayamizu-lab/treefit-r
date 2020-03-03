@@ -136,19 +136,19 @@ is_seurat <- function(object) {
   inherits(object, "Seurat")
 }
 
-do_normalize <- function(original, target, normalize, verbose) {
+do_normalize <- function(original, target, normalize) {
   if (is.null(normalize)) {
     if (is_seurat(original)) {
       assay_name <- target
       original <- Seurat::NormalizeData(original,
                                         assay_name,
-                                        verbose=verbose)
+                                        verbose=FALSE)
       original <- Seurat::FindVariableFeatures(original,
                                                assay_name,
-                                               verbose=verbose)
+                                               verbose=FALSE)
       original <- Seurat::ScaleData(original,
                                     assay=assay_name,
-                                    verbose=verbose)
+                                    verbose=FALSE)
       original
     } else {
       # TODO: Default normalization
@@ -170,7 +170,7 @@ seurat_pca_reduction_name <- function(base_assay_name) {
   paste0(base_assay_name, "_pca")
 }
 
-do_reduce_dimension <- function(original, target, reduce_dimension, verbose) {
+do_reduce_dimension <- function(original, target, reduce_dimension) {
   if (is.null(reduce_dimension) || is.numeric(reduce_dimension)) {
     if (is.numeric(reduce_dimension)) {
       n_dimensions <- reduce_dimension
@@ -188,7 +188,7 @@ do_reduce_dimension <- function(original, target, reduce_dimension, verbose) {
                                  npcs=n_dimensions,
                                  reduction.name=pca_reduction_name,
                                  reduction.key="TREEFITPC_",
-                                 verbose=verbose)
+                                 verbose=FALSE)
       original
     } else {
       target <- stats::prcomp(target, rank.=n_dimensions)$x
@@ -205,20 +205,14 @@ do_reduce_dimension <- function(original, target, reduce_dimension, verbose) {
   }
 }
 
-do_build_tree <- function(original, target, build_tree, verbose) {
+do_build_tree <- function(original, target, build_tree) {
   if (is.null(build_tree)) {
     if (is_seurat(original)) {
       assay_name <- target
       pca_reduction_name <- seurat_pca_reduction_name(assay_name)
       if (pca_reduction_name %in% names(original@reductions)) {
-        if (verbose) {
-          message("use PCA")
-        }
         data <- Seurat::Embeddings(original, pca_reduction_name)
       } else {
-        if (verbose) {
-          message("use scaled data")
-        }
         data <- Seurat::GetAssayData(original, "scale.data", assay_name)
         data <- t(data)
       }
@@ -242,7 +236,6 @@ calculate_eigenvectors_list <- function(original,
                                         reduce_dimension,
                                         build_tree,
                                         max_p,
-                                        verbose,
                                         n_perturbations) {
   poisson_strength <- 1.0
   # TODO: Improve
@@ -250,9 +243,6 @@ calculate_eigenvectors_list <- function(original,
   targets <- c()
 
   if ("poisson" %in% perturbations || is.null(perturbations)) {
-    if (verbose) {
-      message("Poisson perturbation")
-    }
     if (is_seurat(original)) {
       default_assay_name <- Seurat::DefaultAssay(original)
       seurat_counts <- Seurat::GetAssayData(original, "counts")
@@ -279,26 +269,20 @@ calculate_eigenvectors_list <- function(original,
     }
 
     if (!is.null(targets)) {
-      if (verbose) {
-        message("Normalization")
-      }
       if (is_seurat(original)) {
         for (assay_name in targets) {
-          original <- do_normalize(original, assay_name, normalize, verbose)
+          original <- do_normalize(original, assay_name, normalize)
         }
       } else {
         targets <- lapply(targets,
                           function(target) {
-                            do_normalize(original, target, normalize, verbose)
+                            do_normalize(original, target, normalize)
                           })
       }
     }
   }
 
   if ("knn" %in% perturbations || is.null(perturbations)) {
-    if (verbose) {
-      message("k-NN perturbation")
-    }
     if (is.null(targets)) {
       if (is.null(original$expression)) {
         stop(paste("no expression data:", original))
@@ -332,27 +316,16 @@ calculate_eigenvectors_list <- function(original,
 
   lapply(targets,
          function(target) {
-           if (verbose) {
-             message("Dimensionality reduction")
-           }
            if (is_seurat(original)) {
              original <- do_reduce_dimension(original,
                                              target,
-                                             reduce_dimension,
-                                             verbose)
+                                             reduce_dimension)
            } else {
              target <- do_reduce_dimension(original,
                                            target,
-                                           reduce_dimension,
-                                           verbose)
+                                           reduce_dimension)
            }
-           if (verbose) {
-             message("Build tree")
-           }
-           tree <- do_build_tree(original, target, build_tree, verbose)
-           if (verbose) {
-             message("Calculate laplacian eigenvectors")
-           }
+           tree <- do_build_tree(original, target, build_tree)
            calculate_low_dimension_laplacian_eigenvectors(tree, max_p)
          })
 }
@@ -406,10 +379,6 @@ calculate_eigenvectors_list <- function(original,
 #'
 #'   The default is 20.
 #'
-#' @param verbose Show messages if `TRUE`, don't show any messages otherwise.
-#'
-#'   The default is `FALSE`
-#'
 #' @param n_perturbations How many times to perturb.
 #'
 #'   The default is 20.
@@ -447,7 +416,6 @@ treefit <- function(target,
                     reduce_dimension=NULL,
                     build_tree=NULL,
                     max_p=20,
-                    verbose=FALSE,
                     n_perturbations=20) {
   eigenvectors_list <- calculate_eigenvectors_list(target,
                                                    perturbations,
@@ -455,7 +423,6 @@ treefit <- function(target,
                                                    reduce_dimension,
                                                    build_tree,
                                                    max_p,
-                                                   verbose,
                                                    n_perturbations)
   if (is.null(name)) {
     name <- deparse(substitute(target))
