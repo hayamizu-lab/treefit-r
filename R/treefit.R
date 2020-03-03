@@ -78,7 +78,7 @@ perturbate_knn <- function(expression, strength=1.0) {
   for (i in 1:n_samples) {
     sorted_indices <- order(distance_matrix[i, ])
     nearest_neighbors <-
-      expression[sorted_indices[1:(k_nearest_neighbors + 1)], ]
+      expression[sorted_indices[2:(k_nearest_neighbors + 1)], ]
     diffs <- apply(nearest_neighbors,
                    1,
                    function(row) {row - expression[i, ]})
