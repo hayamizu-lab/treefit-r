@@ -16,7 +16,7 @@ Authors@R: c(
 Description: Perform two types of analysis: 1) checking the
     goodness-of-fit of tree models to your single-cell gene expression
     data; and 2) deciding which tree best fits your data.
-License: GPL (>= 3) | file LICENSE
+License: GPL (>= 3)
 URL:
     https://hayamizu-lab.github.io/treefit-r/,
     https://github.com/hayamizu-lab/treefit-r/
