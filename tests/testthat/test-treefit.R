@@ -90,6 +90,21 @@ test_that("calculate_low_dimension_laplacian_eigenvectors", {
                eigenvectors[1, ])
 })
 
+test_that("calculate_canonical_correlation", {
+  values1 <- cbind(1:10, 1:10)
+  mst1 <- calculate_mst(values1)
+  eigenvectors1 <- calculate_low_dimension_laplacian_eigenvectors(mst1, 4)
+  values2 <- cbind(c(5, 1, 2, 5, 8, 9, 2, 8, 1, 2),
+                   c(9, 7, 4, 2, 8, 3, 1, 9, 4, 1))
+  mst2 <- calculate_mst(values2)
+  eigenvectors2 <- calculate_low_dimension_laplacian_eigenvectors(mst2, 4)
+  expect_equal(c(0.94948070,
+                 0.76344509,
+                 0.57019530,
+                 0.06708014),
+               calculate_canonical_correlation(eigenvectors1, eigenvectors2))
+})
+
 test_that("treefit: 2 arms", {
   star <- generate_2d_n_arms_star_data(200, 2, 0.1)
   fit <- treefit(list(expression=star),
