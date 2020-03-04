@@ -25,6 +25,11 @@
 #'
 #' @param strength How much perturbated. `0.0` is weak. `1.0` is strong.
 #'
+#' @return A perturbated counts as a `matrix`. The matrix's counts are
+#'   perturbated from the original counts. The shape of the matrix is
+#'   the same as the original counts. The dimension names of the
+#'   matrix are also the same as the original counts.
+#'
 #' @export
 perturbate_poisson <- function(counts, strength=1.0) {
   matrix(stats::rpois(length(counts), round(counts * strength)),
@@ -60,6 +65,12 @@ calculate_distance_matrix <- function(expression) {
 #'   count of features.
 #'
 #' @param strength How much perturbated. `0.0` is weak. `1.0` is strong.
+#'
+#' @return A perturbated expression as a `matrix`. The matrix's
+#'   expression values are perturbated from the original expression
+#'   values. The shape of the matrix is the same as the original
+#'   expression. The dimension names of the matrix are also the same as
+#'   the original expression.
 #'
 #' @export
 perturbate_knn <- function(expression, strength=1.0) {
@@ -384,7 +395,7 @@ calculate_eigenvectors_list <- function(original,
 #'   The default is 20.
 #'
 #' @return An estimated result as a `treefit` object. It has the
-#'   following elements:
+#'   following attributes:
 #'
 #'   * `max_cca_distance`: The result of max canonical correlation
 #'     analysis distance as `data.frame`.
@@ -500,6 +511,10 @@ treefit <- function(target,
 #'
 #' @param ... The more estimated results to be visualized together or
 #'   other graphical parameters.
+#'
+#' @return A plot object as a `ggplot` object. It plots the given one
+#'   or more estimated results to get insights from one or more
+#'   `treefit()` results.
 #'
 #' @method plot treefit
 #'

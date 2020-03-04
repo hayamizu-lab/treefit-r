@@ -25,6 +25,10 @@ message() or not. And we've also removed needless message()s.
 > If a function does not return a value, please document that too,
 > e.g. \value{None}.
 
+We've added \value to all .Rd files. We don't have any functions that
+don't return a value. So we've described a return value for all
+functions.
+
 ## Test environments
 
 * local: x86_64-pc-linux-gnu-3.6.2
