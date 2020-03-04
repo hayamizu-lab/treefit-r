@@ -29,6 +29,25 @@ We've added \value to all .Rd files. We don't have any functions that
 don't return a value. So we've described a return value for all
 functions.
 
+### Other changes since the first submission
+
+We have the following additional changes since the first submission:
+
+  * Improved documents. (No API change.)
+
+  * Fixed a bug in treefit::treefit() function. (No API change.)
+
+    * Added a test for the case.
+
+  * Added a new "n_perturbations" option to treefit::treefit() function.
+    It's documented. This changes API.
+
+  * Improved internal computation in treefit::treefit() function.
+    (No API change.)
+
+  * Improved visualization by treefit::plot.treefit() function.
+    (No API change.)
+
 ## Test environments
 
 * local: x86_64-pc-linux-gnu-3.6.2
