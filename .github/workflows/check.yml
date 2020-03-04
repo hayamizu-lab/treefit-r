@@ -12,11 +12,14 @@ jobs:
           - ubuntu
           - windows
         R:
+          - "devel"
           - "3.6"
           - "3.5"
         exclude:
           - os: macos
             R: "3.5"
+          - os: ubuntu
+            R: "devel"
     name: R ${{ matrix.R }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
     steps:
