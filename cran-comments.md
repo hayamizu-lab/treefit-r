@@ -57,6 +57,7 @@ We have the following additional changes since the first submission:
   * R 3.6 on macOS Catalina 10.15
   * R 3.5 on Windows Server 2019
   * R 3.6 on Windows Server 2019
+  * R devel on Windows Server 2019
 
 ## R CMD check results
 
