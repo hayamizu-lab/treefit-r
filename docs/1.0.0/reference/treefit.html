@@ -152,7 +152,7 @@ data.</p>
   <span class='kw'>reduce_dimension</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>build_tree</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>max_p</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>n_perturbations</span> <span class='kw'>=</span> <span class='fl'>20</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -205,16 +205,16 @@ available methods:</p></td>
 <p>The default is 20.</p></td>
     </tr>
     <tr>
-      <th>verbose</th>
-      <td><p>Show messages if <code>TRUE</code>, don't show any messages otherwise.</p>
-<p>The default is <code>FALSE</code></p></td>
+      <th>n_perturbations</th>
+      <td><p>How many times to perturb.</p>
+<p>The default is 20.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An estimated result as a <code>treefit</code> object. It has the
-following elements:</p><ul>
+following attributes:</p><ul>
 <li><p><code>max_cca_distance</code>: The result of max canonical correlation
 analysis distance as <code>data.frame</code>.</p></li>
 <li><p><code>rms_cca_distance</code>: The result of root mean square canonical
