@@ -105,6 +105,24 @@ test_that("calculate_canonical_correlation", {
                calculate_canonical_correlation(eigenvectors1, eigenvectors2))
 })
 
+test_that("calculate_grassmann_distance_max_cca", {
+  canonical_correlation <- c(0.94948070,
+                             0.76344509,
+                             0.57019530,
+                             0.06708014)
+  expect_equal(0.3138254297,
+               calculate_grassmann_distance_max_cca(canonical_correlation))
+})
+
+test_that("calculate_grassmann_distance_rms_cca", {
+  canonical_correlation <- c(0.94948070,
+                             0.76344509,
+                             0.57019530,
+                             0.06708014)
+  expect_equal(0.5465038924,
+               calculate_grassmann_distance_rms_cca(canonical_correlation))
+})
+
 test_that("treefit: 2 arms", {
   star <- generate_2d_n_arms_star_data(200, 2, 0.1)
   fit <- treefit(list(expression=star),
