@@ -119,7 +119,7 @@ test_that("calculate_grassmann_distance_rms_cca", {
                              0.76344509,
                              0.57019530,
                              0.06708014)
-  expect_equal(0.5465038924,
+  expect_equal(0.7392590158,
                calculate_grassmann_distance_rms_cca(canonical_correlation))
 })
 

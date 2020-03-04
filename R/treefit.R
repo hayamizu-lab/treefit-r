@@ -139,8 +139,7 @@ calculate_grassmann_distance_max_cca <- function(canonical_correlation) {
 }
 
 calculate_grassmann_distance_rms_cca <- function(canonical_correlation) {
-  n_features <- length(canonical_correlation)
-  (n_features - sum(canonical_correlation ** 2)) / n_features
+  sqrt(1 - mean(canonical_correlation ** 2))
 }
 
 is_seurat <- function(object) {
