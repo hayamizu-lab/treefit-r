@@ -79,6 +79,17 @@ test_that("calculate_mst", {
                            byrow=TRUE))
 })
 
+test_that("calculate_low_dimension_laplacian_eigenvectors", {
+  values <- cbind(1:10, 1:10)
+  mst <- calculate_mst(values)
+  eigenvectors <- calculate_low_dimension_laplacian_eigenvectors(mst, 4)
+  expect_equal(c(-0.44170765403093942281,
+                 -0.42532540417602071603,
+                 -0.39847023129619907333,
+                 -0.36180339887498919049),
+               eigenvectors[1, ])
+})
+
 test_that("treefit: 2 arms", {
   star <- generate_2d_n_arms_star_data(200, 2, 0.1)
   fit <- treefit(list(expression=star),
