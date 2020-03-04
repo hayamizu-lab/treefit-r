@@ -1,6 +1,7 @@
 \.dir-locals.el
 \.tar.gz$
 ^CRAN-RELEASE$
+^LICENSE$
 ^Meta$
 ^Rakefile$
 ^\.git$
