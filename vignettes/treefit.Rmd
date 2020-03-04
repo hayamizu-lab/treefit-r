@@ -124,7 +124,7 @@ We can analyze the second toy data in the same manner.
 
 ```{r estimate-less-tree-like-data}
 fit.less_tree_like <- treefit::treefit(list(expression=star.less_tree_like),
-                                      name="less-tree-like")
+                                       name="less-tree-like")
 # Save the analytsis result to use other tutorials.
 saveRDS(fit.less_tree_like, "fit.less_tree_like.rds")
 fit.less_tree_like
