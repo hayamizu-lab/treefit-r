@@ -349,7 +349,7 @@ calculate_eigenvectors_list <- function(original,
 #'
 #'   * `list(counts=COUNTS, expression=EXPRESSION)`: You must specify
 #'     at least one of `COUNTS` and `EXPRESSION`.  They are
-#'     `matrix`. The rows and columns correspond to samples such
+#'     `matrix`. The rows and columns correspond to samples such as
 #'     cells and features such as genes. `COUNTS`'s value is count
 #'     data such as the number of genes expressed.  `EXPRESSION`'s
 #'     value is normalized count data.
