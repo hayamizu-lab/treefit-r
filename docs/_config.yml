@@ -1,5 +1,6 @@
 title: Treefit for R
-description: Treefit for R - The first software for quantitative trajectory inference - Hayamizu lab
+description: The first software for quantitative trajectory inference
+author: Hayamizu lab
 latest_version: 1.0.0
 markdown: kramdown
 highlighter: rouge
