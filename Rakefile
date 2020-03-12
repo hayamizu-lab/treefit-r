@@ -53,6 +53,8 @@ end
 
 desc "Tag"
 task :tag do
-  sh("git", "tag", "-a", version, "-m", "Publish #{version}")
+  sh("git", "tag",
+     "-a", version,
+     "-m", "Treefit #{version}!!!")
   sh("git", "push", "--tags")
 end
