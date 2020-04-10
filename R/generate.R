@@ -19,7 +19,7 @@
 #'   `n_samples` data points and fit a star tree with `n_arms` arms.
 #'
 #' @param n_samples The number of samples to be generated.
-#"
+#'
 #' @param n_arms The number of arms to be generated.
 #'
 #' @param fatness How fat from the based star tree. `[0.0, 1.0]` is
@@ -129,6 +129,67 @@ generate_2d_n_arms_linked_star_data <- function(n_samples_vector,
     sub_star[, 1] <- sub_star[, 1] + sub_star_offsets[1]
     sub_star[, 2] <- sub_star[, 2] + sub_star_offsets[2]
     star <- rbind(star, sub_star)
+  }
+  star
+}
+
+#' Generate a multi-dimensional star tree data
+#'
+#' @description Generate a multi-dimensional star tree data that contain
+#'   `n_samples` data points and fit a star tree with `n_arms` arms.
+#'
+#' @param n_features The number of features (dimensions) to be
+#'   generated.
+#'
+#' @param n_samples The number of samples to be generated.
+#'
+#' @param n_arms The number of arms to be generated.
+#'
+#' @param fatness How fat from the based star tree. `[0.0, 1.0]` is
+#'   available value range.
+#'
+#' @return A generated `martix`. The rows and columns correspond to
+#'   samples and features.
+#'
+#' @examples
+#' # Generate a 100-dimensional star tree data that contain 500 data points
+#' # and fit a star tree with 3 arms. The generated data are a bit noisy but
+#' # tree-like.
+#' star100.tree_like <- treefit::generate_n_arms_star_data(100, 500, 3, 0.1)
+#' # Reduce dimension to visualize.
+#' star3.tree_like = prcomp(star100.tree_like, rank.=3)$x
+#' plotly::plot_ly(data.frame(star3.tree_like),
+#'                 x=~PC1,
+#'                 y=~PC2,
+#'                 z=~PC3,
+#'                 type="scatter3d",
+#'                 mode="markers",
+#'                 marker=list(size=1))
+#'
+#' @export
+generate_n_arms_star_data <- function(n_features, n_samples, n_arms, fatness) {
+  sigma <- fatness / n_arms
+  star <- matrix(,
+                 nrow=n_samples,
+                 ncol=n_features,
+                 dimnames=list(lapply(1:n_samples,
+                                      function(i) {paste0("sample", i)}),
+                               lapply(1:n_features,
+                                      function(i) {paste0("feature", i)})))
+  directions <- matrix(stats::rnorm(n_arms * n_features),
+                       nrow=n_arms,
+                       ncol=n_features)
+  directions <- t(apply(t(directions),
+                        2,
+                        function(arm_direction) {
+                          arm_direction / norm(arm_direction, type="2")
+                        }))
+  for (i in 1:n_samples) {
+    arm <- sample(1:n_arms, 1)
+    direction <- directions[arm, ]
+    position <- direction * stats::runif(1)
+    position <- position + stats::rnorm(n_features, sd=sigma)
+    star[i, ] <- position
   }
   star
 }

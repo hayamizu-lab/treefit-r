@@ -3,6 +3,7 @@
 S3method(plot,treefit)
 export(generate_2d_n_arms_linked_star_data)
 export(generate_2d_n_arms_star_data)
+export(generate_n_arms_star_data)
 export(perturbate_knn)
 export(perturbate_poisson)
 export(treefit)
