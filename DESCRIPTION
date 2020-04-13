@@ -11,7 +11,17 @@ Authors@R: c(
              family="Sutou",
              email="kou@clear-code.com",
              role=c("aut", "cre"),
-             comment=c(ORCID="0000-0002-5528-5109"))
+             comment=c(ORCID="0000-0002-5528-5109")),
+      person(given="Ryohei",
+             family="Suzuki",
+             email="ryoheis@acm.org",
+             role=c("aut"),
+             comment=c(ORCID="0000-0002-1528-665X")),
+      person(given="Hiromi",
+             family="Ishii",
+             email="h-ishii@math.tsukuba.ac.jp",
+             role=c("aut"),
+             comment=c(ORCID="0000-0002-7752-1782"))
     )
 Description: Perform two types of analysis: 1) checking the
     goodness-of-fit of tree models to your single-cell gene expression
