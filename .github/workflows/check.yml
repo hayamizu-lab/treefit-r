@@ -54,6 +54,11 @@ jobs:
           matrix.R == '3.5'
         run: |
           Rscript -e "devtools::install_version('caTools', version='1.17.1.4')"
+      - name: Install old ROCR for R 3.5
+        if: |
+          matrix.R == '3.5'
+        run: |
+          Rscript -e "devtools::install_version('ROCR', version='1.0-7')"
       - name: Install dependencies
         run: |
           Rscript -e "devtools::install_deps(dependencies=TRUE)"
