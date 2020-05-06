@@ -23,6 +23,8 @@ jobs:
             R: "3.5"
           - os: ubuntu
             R: "devel"
+          - os: windows
+            R: "3.5"
     name: R ${{ matrix.R }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
     steps:
