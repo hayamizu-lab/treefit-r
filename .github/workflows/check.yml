@@ -14,17 +14,11 @@ jobs:
         R:
           - "devel"
           - "4.0"
-          - "3.6"
-          - "3.5"
         exclude:
           - os: macos
             R: "devel"
-          - os: macos
-            R: "3.5"
           - os: ubuntu
             R: "devel"
-          - os: windows
-            R: "3.5"
     name: R ${{ matrix.R }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}-latest
     steps:
@@ -59,21 +53,11 @@ jobs:
       - name: Install multtest separately
         run: |
           Rscript -e "BiocManager::install(c('multtest'))"
-      - name: Install old caTools for R 3.5
+      - name: Install development version of Seurat for spatstat on Ubuntu
         if: |
-          matrix.R == '3.5'
+          matrix.os == 'ubuntu'
         run: |
-          Rscript -e "remotes::install_version('caTools', '1.17.1.4')"
-      - name: Install old ROCR for R 3.5
-        if: |
-          matrix.R == '3.5'
-        run: |
-          Rscript -e "remotes::install_version('ROCR', '1.0-7')"
-      - name: Install old Seurat for R 3.5 and 3.6
-        if: |
-          matrix.R == '3.5' || matrix.R == '3.6'
-        run: |
-          Rscript -e "remotes::install_version('Seurat', '< 4')"
+          Rscript -e "remotes::install_github(repo='satijalab/seurat', ref='develop')"
       - name: Install dependencies
         run: |
           Rscript -e "remotes::install_deps(dependencies=TRUE)"
