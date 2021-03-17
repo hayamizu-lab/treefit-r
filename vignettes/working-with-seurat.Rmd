@@ -100,7 +100,7 @@ Here we assume that we wish to perform the following preprocessing.
 
 This can be done by setting the designated parameters as follows.
 
-```{r preprocessing}
+```{r preprocessing, error=TRUE}
 trapnell <- Seurat::CreateSeuratObject(counts=t(trapnell.dynverse$count),
                                        min.cells=3,
                                        min.features=200)
@@ -119,7 +119,7 @@ visualize data before starting detailed analysis. Here we create a
 scatter plot by principal component analysis (PCA). Below are a few
 lines of code to do this and the result is shown in Figure 1.
 
-```{r visualization, fig.asp=1, fig.cap="Figure 1. The result of PCA for the myoblast dataset"}
+```{r visualization, error=TRUE, fig.asp=1, fig.cap="Figure 1. The result of PCA for the myoblast dataset"}
 trapnell <- Seurat::FindVariableFeatures(trapnell, verbose=FALSE)
 trapnell <- Seurat::ScaleData(trapnell, verbose=FALSE)
 trapnell <- Seurat::RunPCA(trapnell, verbose=FALSE)
@@ -153,12 +153,12 @@ the number of principal paths in the best-fit tree. The workflow is
 the same as the toy data analysis described in the previous tutorial
 (`vignette("treefit")`).
 
-```{r estimate}
+```{r estimate, error=TRUE}
 trapnell.fit <- treefit::treefit(trapnell)
 trapnell.fit
 ```
 
-```{r plot, fig.cap="Figure 2. Summary of the Treefit analysis results"}
+```{r plot, error=TRUE, fig.cap="Figure 2. Summary of the Treefit analysis results"}
 plot(trapnell.fit)
 ```
 
