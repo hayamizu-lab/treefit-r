@@ -64,6 +64,11 @@ jobs:
           matrix.R == '3.5'
         run: |
           Rscript -e "remotes::install_version('ROCR', '1.0-7')"
+      - name: Install old Seurat for R 3.5 and 3.6
+        if: |
+          matrix.R == '3.5' || matrix.R == '3.6'
+        run: |
+          Rscript -e "remotes::install_version('Seurat', '< 4')"
       - name: Install dependencies
         run: |
           Rscript -e "remotes::install_deps(dependencies=TRUE)"
