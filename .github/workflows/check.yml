@@ -49,6 +49,9 @@ jobs:
       - name: Install rcmdcheck
         run: |
           Rscript -e "remotes::install_cran(c('rcmdcheck'))"
+      - name: Install roxygen2
+        run: |
+          Rscript -e "remotes::install_cran(c('roxygen2'))"
       - name: Install BiocManager
         run: |
           Rscript -e "install.packages(c('BiocManager'))"
@@ -74,6 +77,9 @@ jobs:
       - name: Install dependencies
         run: |
           Rscript -e "remotes::install_deps(dependencies=TRUE)"
+      - name: Run roxygen
+        run: |
+          Rscript -e "roxygen2::roxygenise()"
       - name: Check
         run: |
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), error_on='warning', check_dir='check')"
