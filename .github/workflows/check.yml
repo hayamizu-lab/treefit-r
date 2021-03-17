@@ -63,7 +63,7 @@ jobs:
         if: |
           matrix.R == '3.5'
         run: |
-          Rscript -e "removes::install_version('ROCR', '1.0-7')"
+          Rscript -e "remotes::install_version('ROCR', '1.0-7')"
       - name: Install dependencies
         run: |
           Rscript -e "remotes::install_deps(dependencies=TRUE)"
