@@ -53,11 +53,6 @@ jobs:
       - name: Install multtest separately
         run: |
           Rscript -e "BiocManager::install(c('multtest'))"
-      - name: Install development version of Seurat for spatstat on Ubuntu
-        if: |
-          matrix.os == 'ubuntu'
-        run: |
-          Rscript -e "remotes::install_github(repo='satijalab/seurat', ref='develop')"
       - name: Install dependencies
         run: |
           Rscript -e "remotes::install_deps(dependencies=TRUE)"
