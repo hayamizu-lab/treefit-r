@@ -62,3 +62,6 @@ jobs:
       - name: Check
         run: |
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), error_on='warning', check_dir='check')"
+      - name: Log
+        run: cat check/treefit.Rcheck/00check.out
+        if: always()
