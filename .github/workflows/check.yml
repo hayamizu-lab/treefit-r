@@ -28,9 +28,9 @@ jobs:
           r-version: ${{ matrix.R }}
       - uses: r-lib/actions/setup-pandoc@v1
       - uses: r-lib/actions/setup-tinytex@v1
-      - name: Install TeX Live packages
+      - name: Show R version
         run: |
-          tlmgr install inconsolata
+          R --version
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
@@ -96,4 +96,6 @@ jobs:
           matrix.os == 'windows'
         continue-on-error: true
         run: |
-          R CMD Rd2pdf check/treefit.Rcheck/00_pkg_src/treefit/man/*.Rd
+          R CMD Rd2pdf --help
+          R CMD Rd2pdf check\treefit.Rcheck\00_pkg_src\treefit\man\treefit.Rd
+          R CMD Rd2pdf check\treefit.Rcheck\00_pkg_src\treefit\man\*.Rd
