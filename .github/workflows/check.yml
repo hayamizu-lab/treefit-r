@@ -74,5 +74,6 @@ jobs:
       - name: Log
         if: |
           always()
+        continue-on-error: true
         run: |
           cat check/Rdlatex.log
