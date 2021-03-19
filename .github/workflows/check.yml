@@ -104,4 +104,4 @@ jobs:
           matrix.os == 'windows'
         continue-on-error: true
         run: |
-          R.exe CMD Rd2pdf check\treefit.Rcheck\00_pkg_src\treefit\man\*.Rd
+          R.exe CMD Rd2pdf check/treefit.Rcheck/00_pkg_src/treefit/man/*.Rd
