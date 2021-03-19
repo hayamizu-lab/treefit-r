@@ -71,3 +71,8 @@ jobs:
           matrix.os == 'windows'
         run: |
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), check_dir='check')"
+      - name: Log
+        if: |
+          always()
+        run: |
+          cat check/Rdlatex.log
