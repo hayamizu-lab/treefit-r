@@ -86,6 +86,12 @@ jobs:
         continue-on-error: true
         run: |
           cat check/treefit.Rcheck/treefit-manual.log
+      - name: "check/treefit.Rcheck/treefit-manual.tex"
+        if: |
+          always()
+        continue-on-error: true
+        run: |
+          cat check/treefit.Rcheck/treefit-manual.tex
       - name: Debug
         if: |
           matrix.os == 'windows'
