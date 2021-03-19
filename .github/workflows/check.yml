@@ -28,8 +28,9 @@ jobs:
           r-version: ${{ matrix.R }}
       - uses: r-lib/actions/setup-pandoc@v1
       - uses: r-lib/actions/setup-tinytex@v1
+      - run: Install TeX Live packages
       - run: |
-          latex --version
+          tlmgr install inconsolata
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
