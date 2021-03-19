@@ -72,12 +72,25 @@ jobs:
           matrix.os == 'windows'
         run: |
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), check_dir='check')"
-      - name: Log
+      - name: "check/treefit.Rcheck/Rdlatex.log"
         if: |
           always()
         continue-on-error: true
         run: |
           cat check/treefit.Rcheck/Rdlatex.log
+      - name: "check/treefit.Rcheck/treefit-manual.log"
+        if: |
+          always()
+        continue-on-error: true
+        run: |
+          cat check/treefit.Rcheck/treefit-manual.log
+      - name: Debug
+        if: |
+          matrix.os == 'windows'
+        continue-on-error: true
+        shell: bash
+        run: |
+          find check
       - name: Re-run Rd2pdf
         if: |
           matrix.os == 'windows'
