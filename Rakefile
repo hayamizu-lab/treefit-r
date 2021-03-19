@@ -51,6 +51,13 @@ task :release do
   sh("git", "add", doc_dir)
 end
 
+namespace :cran do
+  desc "Submit to CRAN"
+  task :submit do
+    sh("Rscript", "-e", "devtools::submit()")
+  end
+end
+
 desc "Tag"
 task :tag do
   sh("git", "tag",
