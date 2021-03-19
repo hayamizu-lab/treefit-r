@@ -54,7 +54,7 @@ end
 namespace :cran do
   desc "Submit to CRAN"
   task :submit do
-    sh("Rscript", "-e", "devtools::submit_cran()")
+    sh("Rscript", "-e", "devtools::release()")
   end
 end
 
