@@ -93,17 +93,9 @@ jobs:
         shell: bash
         run: |
           find check
-      - name: Re-run texify
-        if: |
-          matrix.os == 'windows'
-        continue-on-error: true
-        run: |
-          texify --pdf check\treefit.Rcheck\treefit-manual.tex
       - name: Re-run Rd2pdf
         if: |
           matrix.os == 'windows'
         continue-on-error: true
         run: |
-          R.exe CMD Rd2pdf --help
-          R.exe CMD Rd2pdf check\treefit.Rcheck\00_pkg_src\treefit\man\treefit.Rd
           R.exe CMD Rd2pdf check\treefit.Rcheck\00_pkg_src\treefit\man\*.Rd
