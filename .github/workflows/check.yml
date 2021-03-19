@@ -59,9 +59,13 @@ jobs:
       - name: Run roxygen
         run: |
           Rscript -e "roxygen2::roxygenise()"
-      - name: Check
+      - name: "Check: not accept warning"
+        if: |
+          matrix.os != 'windows'
         run: |
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), error_on='warning', check_dir='check')"
-      - name: Log
-        run: cat check/treefit.Rcheck/00check.log
-        if: always()
+      - name: "Check: accept warning"
+        if: |
+          matrix.os == 'windows'
+        run: |
+          Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), check_dir='check')"
