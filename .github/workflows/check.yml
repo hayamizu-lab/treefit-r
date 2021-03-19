@@ -76,4 +76,4 @@ jobs:
           always()
         continue-on-error: true
         run: |
-          cat check/Rdlatex.log
+          cat check/treefit.Rcheck/Rdlatex.log
