@@ -32,8 +32,8 @@ jobs:
         if: |
           matrix.os == 'windows'
         run: |
-          tlmgr.exe search makeindex
-          tlmgr.exe install makeindex
+          Rscript -e "tinytex::tlmgr_search('makeindex')"
+          Rscript -e "tinytex::tlmgr_install('makeindex')"
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
