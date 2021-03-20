@@ -36,7 +36,7 @@ jobs:
           matrix.os == 'windows'
         run: |
           Rscript -e "install.packages(c('tinytex'))"
-          Rscript -e "tinytex::install_tinytex())"
+          Rscript -e "tinytex::install_tinytex()"
           Rscript -e "tinytex::tlmgr_search('makeindex')"
           Rscript -e "tinytex::tlmgr_install('makeindex')"
       - name: Install system packages
