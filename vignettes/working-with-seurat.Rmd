@@ -73,7 +73,7 @@ To use this dataset, we download and read the dataset provided in
 dynverse as follows (see https://zenodo.org/record/1443566 for
 details).
 
-```{r load}
+```{r load, error=TRUE}
 trapnell.path <- "myoblast-differentiation_trapnell.rds"
 if (!file.exists(trapnell.path)) {
   download.file("https://zenodo.org/record/1443566/files/real/gold/myoblast-differentiation_trapnell.rds?download=1",
