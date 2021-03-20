@@ -27,11 +27,16 @@ jobs:
         with:
           r-version: ${{ matrix.R }}
       - uses: r-lib/actions/setup-pandoc@v1
-      - uses: r-lib/actions/setup-tinytex@v1
-      - name: Install makeindex
+      - name: Install TinyTeX by action
+        uses: r-lib/actions/setup-tinytex@v1
+        if: |
+          matrix.os != 'windows'
+      - name: Install TinyTeX by package
         if: |
           matrix.os == 'windows'
         run: |
+          Rscript -e "install.packages(c('tinytex'))"
+          Rscript -e "tinytex::install_tinytex())"
           Rscript -e "tinytex::tlmgr_search('makeindex')"
           Rscript -e "tinytex::tlmgr_install('makeindex')"
       - name: Install system packages
