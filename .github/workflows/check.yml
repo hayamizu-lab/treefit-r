@@ -37,8 +37,8 @@ jobs:
         run: |
           Rscript -e "install.packages(c('tinytex'))"
           Rscript -e "tinytex::install_tinytex()"
-          Rscript -e "tinytex::tlmgr_search('makeindex')"
           Rscript -e "tinytex::tlmgr_install('makeindex')"
+          Rscript -e "tinytex::tlmgr_install('pdflatex')"
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
@@ -77,7 +77,7 @@ jobs:
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), error_on='warning', check_dir='check')"
       - name: "Check: accept warning"
         if: |
-          matrix.os == 'windows'
+          false && matrix.os == 'windows'
         run: |
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), check_dir='check')"
       - name: "check/treefit.Rcheck/Rdlatex.log"
