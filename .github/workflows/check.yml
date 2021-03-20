@@ -32,8 +32,8 @@ jobs:
         if: |
           matrix.os == 'windows'
         run: |
-          tlmgr search makeindex
-          tlmgr install makeindex
+          tlmgr.exe search makeindex
+          tlmgr.exe install makeindex
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
