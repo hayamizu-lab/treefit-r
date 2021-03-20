@@ -28,11 +28,12 @@ jobs:
           r-version: ${{ matrix.R }}
       - uses: r-lib/actions/setup-pandoc@v1
       - uses: r-lib/actions/setup-tinytex@v1
-      - name: Show R version
+      - name: Install makeindex
         if: |
           matrix.os == 'windows'
         run: |
-          R.exe --version
+          tlmgr search makeindex
+          tlmgr install makeindex
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
