@@ -33,7 +33,7 @@ jobs:
           matrix.os == 'windows'
         run: |
           Get-ChildItem -Recurse "${Env:APPDATA}\TinyTex"
-          tlmgr.exe install makeindex
+          tlmgr.bat install makeindex
       - name: Install system packages
         if: |
           matrix.os == 'ubuntu'
