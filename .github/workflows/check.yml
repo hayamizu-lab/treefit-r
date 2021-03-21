@@ -28,11 +28,10 @@ jobs:
           r-version: ${{ matrix.R }}
       - uses: r-lib/actions/setup-pandoc@v1
       - uses: r-lib/actions/setup-tinytex@v1
-      - name: Install makeindex
+      - name: Install makeindex explicitly on Windows
         if: |
           matrix.os == 'windows'
         run: |
-          Get-ChildItem -Recurse "${Env:APPDATA}\TinyTex"
           tlmgr.bat install makeindex
       - name: Install system packages
         if: |
@@ -65,44 +64,12 @@ jobs:
       - name: Run roxygen
         run: |
           Rscript -e "roxygen2::roxygenise()"
-      - name: "Check: not accept warning"
-        if: |
-          matrix.os != 'windows'
+      - name: Check
         run: |
           Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), error_on='warning', check_dir='check')"
-      - name: "Check: accept warning"
+      - name: "Debug: Re-run Rd2pdf"
         if: |
-          matrix.os == 'windows'
-        run: |
-          Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), check_dir='check')"
-      - name: "check/treefit.Rcheck/Rdlatex.log"
-        if: |
-          always()
-        continue-on-error: true
-        run: |
-          cat check/treefit.Rcheck/Rdlatex.log
-      - name: "check/treefit.Rcheck/treefit-manual.log"
-        if: |
-          always()
-        continue-on-error: true
-        run: |
-          cat check/treefit.Rcheck/treefit-manual.log
-      - name: "check/treefit.Rcheck/treefit-manual.tex"
-        if: |
-          always()
-        continue-on-error: true
-        run: |
-          cat check/treefit.Rcheck/treefit-manual.tex
-      - name: Debug
-        if: |
-          matrix.os == 'windows'
-        continue-on-error: true
-        shell: bash
-        run: |
-          find check
-      - name: Re-run Rd2pdf
-        if: |
-          matrix.os == 'windows'
+          false && matrix.os == 'windows'
         continue-on-error: true
         run: |
           R.exe CMD Rd2pdf check/treefit.Rcheck/00_pkg_src/treefit/man/*.Rd
