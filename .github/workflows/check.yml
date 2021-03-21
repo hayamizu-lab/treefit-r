@@ -32,7 +32,7 @@ jobs:
         if: |
           matrix.os == 'windows'
         run: |
-          Get-ChildItem "${Env:APPDATA}\TinyTex"
+          Get-ChildItem -Recurse "${Env:APPDATA}\TinyTex"
           tlmgr.exe install makeindex
       - name: Install system packages
         if: |
