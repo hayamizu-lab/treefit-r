@@ -412,11 +412,13 @@ calculate_eigenvectors_list <- function(original,
 #'     distance values.
 #'
 #' @examples
+#' \dontrun{
 #' # Generate a star tree data that have normalized expression values
 #' # not count data.
 #' star <- treefit::generate_2d_n_arms_star_data(300, 3, 0.1)
 #' # Estimate tree-likeness of the tree data.
 #' fit <- treefit::treefit(list(expression=star))
+#' }
 #'
 #' @export
 treefit <- function(target,
