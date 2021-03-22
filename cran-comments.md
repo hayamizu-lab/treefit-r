@@ -23,6 +23,8 @@ vignette that depends on a package in Suggests, Seurat.
   * R 4.0 on macOS Catalina 10.15
   * R 4.0 on Windows Server 2019
   * R devel on Windows Server 2019
+* win-builder:
+  * R 4.0 on x86_64-w64-mingw32
 
 ## R CMD check results
 
