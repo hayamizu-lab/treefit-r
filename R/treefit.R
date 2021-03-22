@@ -518,6 +518,7 @@ treefit <- function(target,
 #' @method plot treefit
 #'
 #' @examples
+#' \dontrun{
 #' # Generate a tree data.
 #' tree <- treefit::generate_2d_n_arms_star_data(200, 3, 0.1)
 #' # Estimate the goodness-of-fit between tree models and the tree data.
@@ -529,6 +530,7 @@ treefit <- function(target,
 #' tree2 <- treefit::generate_2d_n_arms_star_data(200, 3, 0.9)
 #' fit2 <- treefit::treefit(list(expression=tree2), "tree2")
 #' plot(fit, fit2)
+#' }
 #'
 #' @import patchwork
 #'

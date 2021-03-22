@@ -31,7 +31,7 @@ def generate_document(dir)
   rm_rf(dir)
   sh("Rscript",
      "-e",
-     "pkgdown::build_site(override=list(destination=\"#{dir}\"))")
+     "pkgdown::build_site(run_dont_run=TRUE, override=list(destination=\"#{dir}\"))")
 end
 
 namespace :doc do
