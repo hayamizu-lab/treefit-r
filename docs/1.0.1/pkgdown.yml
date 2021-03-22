@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   treefit: treefit.html
   working-with-seurat: working-with-seurat.html
-last_built: 2021-03-19T22:18Z
+last_built: 2021-03-22T06:03Z
 urls:
   reference: https://hayamizu-lab.github.io/treefit-r/reference
   article: https://hayamizu-lab.github.io/treefit-r/articles
