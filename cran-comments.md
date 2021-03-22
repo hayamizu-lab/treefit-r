@@ -25,6 +25,7 @@ vignette that depends on a package in Suggests, Seurat.
   * R devel on Windows Server 2019
 * win-builder:
   * R 4.0 on x86_64-w64-mingw32
+  * R devel on x86_64-w64-mingw32
 
 ## R CMD check results
 
