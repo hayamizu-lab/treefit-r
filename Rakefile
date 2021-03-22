@@ -44,6 +44,7 @@ end
 namespace :check do
   desc "Check on win-builder.r-project.org"
   task :win_builder do
+    sh("Rscript", "-e", "devtools::check_win_devel()")
     sh("Rscript", "-e", "devtools::check_win_release()")
   end
 end
