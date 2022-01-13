@@ -13,6 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+cut_digits <- function(x, digits=0){
+  trunc(x * 10^digits) / 10^digits
+}
+
 test_that("calculate_distance_matrix", {
   values <- matrix(c(1, 0,
                      0, 1,
@@ -83,11 +87,11 @@ test_that("calculate_low_dimension_laplacian_eigenvectors", {
   values <- cbind(1:10, 1:10)
   mst <- calculate_mst(values)
   eigenvectors <- calculate_low_dimension_laplacian_eigenvectors(mst, 4)
-  expect_equal(c(-0.44170765403093942281,
-                 -0.42532540417602071603,
-                 -0.39847023129619907333,
-                 -0.36180339887498919049),
-               eigenvectors[1, ])
+  expect_equal(c(0.4417,
+                  0.4253,
+                  0.3984,
+                  0.3618),
+                abs(cut_digits(eigenvectors[1, ], 4)))
 })
 
 test_that("calculate_canonical_correlation", {
@@ -98,11 +102,11 @@ test_that("calculate_canonical_correlation", {
                    c(9, 7, 4, 2, 8, 3, 1, 9, 4, 1))
   mst2 <- calculate_mst(values2)
   eigenvectors2 <- calculate_low_dimension_laplacian_eigenvectors(mst2, 4)
-  expect_equal(c(0.94948070,
-                 0.76344509,
-                 0.57019530,
-                 0.06708014),
-               calculate_canonical_correlation(eigenvectors1, eigenvectors2))
+  expect_equal(c(0.9494,
+                 0.7634,
+                 0.5701,
+                 0.0670),
+               cut_digits(calculate_canonical_correlation(eigenvectors1, eigenvectors2), 4))
 })
 
 test_that("calculate_grassmann_distance_max_cca", {
@@ -110,8 +114,8 @@ test_that("calculate_grassmann_distance_max_cca", {
                              0.76344509,
                              0.57019530,
                              0.06708014)
-  expect_equal(0.3138254297,
-               calculate_grassmann_distance_max_cca(canonical_correlation))
+  expect_equal(0.3138,
+               cut_digits(calculate_grassmann_distance_max_cca(canonical_correlation), 4))
 })
 
 test_that("calculate_grassmann_distance_rms_cca", {
@@ -119,8 +123,8 @@ test_that("calculate_grassmann_distance_rms_cca", {
                              0.76344509,
                              0.57019530,
                              0.06708014)
-  expect_equal(0.7392590158,
-               calculate_grassmann_distance_rms_cca(canonical_correlation))
+  expect_equal(0.7392,
+               cut_digits(calculate_grassmann_distance_rms_cca(canonical_correlation), 4))
 })
 
 test_that("treefit: 2 arms", {
