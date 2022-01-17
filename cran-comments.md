@@ -1,33 +1,33 @@
-## Resubmission
-
-This is a resubmission.
-
-Previous submission was rejected by auto pre-tests on win-builder:
-
-> package treefit_1.0.1.tar.gz does not pass the incoming checks automatically, please see the following pre-tests:
-> Windows: <https://win-builder.r-project.org/incoming_pretest/treefit_1.0.1_20210322_021827/Windows/00check.log>
-> Status: 2 NOTEs
-> Debian: <https://win-builder.r-project.org/incoming_pretest/treefit_1.0.1_20210322_021827/Debian/00check.log>
-> Status: OK
-
-The notes are caused by too long examples. We've fixed the notes by
-surrounding examples that may take a long time by `\dontrun{}`.
-
 ## Test environments
 
-* local: R 4.0.4 x86_64-pc-linux-gnu (64-bit)
+* local: R 4.1.2 x86_64-pc-linux-gnu (64-bit)
 * GitHub Actions:
-  * R 4.0 on Ubuntu 20.4
-  * R 4.0 on macOS Catalina 10.15
+  * R 4.0 on Ubuntu 20.04
+  * R 4.1 on Ubuntu 20.04
+  * R 4.0 on macOS 11.6
+  * R 4.1 on macOS 11.6
   * R 4.0 on Windows Server 2019
+  * R 4.1 on Windows Server 2019
   * R devel on Windows Server 2019
 * win-builder:
-  * R 4.0 on x86_64-w64-mingw32
-  * R devel on x86_64-w64-mingw32
+  * R 4.1.2 on x86_64-w64-mingw32
 
 ## R CMD check results
 
-Status: OK
+Status: 1 NOTE (only on win-builder)
+
+    * checking CRAN incoming feasibility ... NOTE
+    Maintainer: 'Kouhei Sutou <kou@clear-code.com>'
+
+    New submission
+
+    Package was archived on CRAN
+
+    CRAN repository db overrides:
+      X-CRAN-Comment: Archived on 2021-03-29 as check problems were not
+        corrected in time.
+
+      Signs of results vary.
 
 ## revdepcheck results
 
