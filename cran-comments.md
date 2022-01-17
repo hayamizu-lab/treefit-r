@@ -11,6 +11,7 @@
   * R devel on Windows Server 2019
 * win-builder:
   * R 4.1.2 on x86_64-w64-mingw32
+  * R Under development (unstable) (2022-01-16 r81507 ucrt)
 
 ## R CMD check results
 
