@@ -1,6 +1,7 @@
 \.dir-locals.el
 \.tar.gz$
 ^CRAN-RELEASE$
+^CRAN-SUBMISSION$
 ^LICENSE$
 ^Meta$
 ^Rakefile$

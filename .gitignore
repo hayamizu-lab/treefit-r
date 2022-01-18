@@ -3,6 +3,8 @@
 /*.tar.gz
 /..Rcheck
 /.RData
+/CRAN-RELEASE
+/CRAN-SUBMISSION
 /Meta
 /R/.Rhistory
 /doc
