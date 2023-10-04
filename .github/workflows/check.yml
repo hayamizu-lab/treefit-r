@@ -41,6 +41,7 @@ jobs:
           sudo apt update
           sudo apt install -V -y \
             libcurl4-openssl-dev \
+            libhdf5-dev \
             pandoc-citeproc \
             qpdf
       - name: Install remotes
@@ -59,9 +60,26 @@ jobs:
       - name: Install multtest separately
         run: |
           Rscript -e "BiocManager::install(c('multtest'))"
+      - name: Install BPCells separately
+        run: |
+          Rscript -e "remotes::install_github('bnprks/BPCells')"
+        env:
+          GITHUB_PAT: ${{ github.token }}
+      - name: Install SeuratObject separately
+        run: |
+          Rscript -e "remotes::install_github('mojaveazure/seurat-object', 'seurat5')"
+        env:
+          GITHUB_PAT: ${{ github.token }}
+      - name: Install Seurat 5 separately
+        run: |
+          Rscript -e "remotes::install_github('satijalab/seurat', 'seurat5')"
+        env:
+          GITHUB_PAT: ${{ github.token }}
       - name: Install dependencies
         run: |
           Rscript -e "remotes::install_deps(dependencies=TRUE)"
+        env:
+          GITHUB_PAT: ${{ github.token }}
       - name: Run roxygen
         run: |
           Rscript -e "roxygen2::roxygenise()"
