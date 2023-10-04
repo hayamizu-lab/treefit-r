@@ -13,8 +13,8 @@ jobs:
           - windows
         R:
           - "devel"
-          - "4.1"
-          - "4.0"
+          - "4.3"
+          - "4.2"
         exclude:
           - os: macos
             R: "devel"
