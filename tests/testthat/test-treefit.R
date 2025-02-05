@@ -138,6 +138,10 @@ test_that("treefit: 2 arms", {
 })
 
 test_that("treefit: 3 arms", {
+  # It seems that this test is flaky on CRAN. Let's skip this on CRAN.
+  # See also: https://github.com/hayamizu-lab/treefit-r/issues/4
+  skip_on_cran()
+
   star <- generate_2d_n_arms_star_data(200, 3, 0.1)
   fit <- treefit(list(expression=star),
                  "tree-like")
