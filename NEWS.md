@@ -1,3 +1,10 @@
+# treefit 1.0.3
+
+## Improvements
+
+* Skipped a flaky test on CRAN.
+  * [GH-4](https://github.com/hayamizu-lab/treefit-r/issues/4)
+
 # treefit 1.0.2
 
 ## Improvements
