@@ -47,3 +47,44 @@ plot(fit)
 ```
 
 See `vignette("treefit")` for details.
+
+## How to release
+
+Bump `Version:` in `DESCRIPTION`.
+
+Add a release note to `NEWS.md`.
+
+Check on local:
+
+```bash
+Rscript -e "roxygen2::roxygenise()"
+Rscript -e "rcmdcheck::rcmdcheck(args=c('--as-cran'), error_on='warning', check_dir='check')"
+```
+
+Check on win-builder.r-project.org:
+
+```bash
+rake check:win_builder
+```
+
+Update `cran-comments.md`.
+
+Submit to CRAN:
+
+```bash
+rake cran:submit
+```
+
+Update document after the submission is accepted:
+
+```bash
+rake release
+```
+
+Update version in `docs/_config.yml`.
+
+Tag:
+
+```bash
+rake tag
+```
