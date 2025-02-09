@@ -52,7 +52,9 @@ See `vignette("treefit")` for details.
 
 Bump `Version:` in `DESCRIPTION`.
 
-Add a release note to `NEWS.md`.
+Add a release note to `NEWS.md`. You need to run `Rscript -e
+"devtools::spell_check()` after it. You may need to update
+`inst/WORDLIST` too.
 
 Check on local:
 
