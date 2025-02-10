@@ -82,3 +82,6 @@ Release after the submission is accepted:
 ```bash
 rake release
 ```
+
+Bump `Version:` to `X.Y.Z.9000` in `DESCRIPTION` for a new
+development.
