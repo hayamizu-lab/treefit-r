@@ -75,7 +75,7 @@ namespace :release do
       "#{$1}#{version}"
     end
     File.write(config_yml, config_yml_content)
-    sh("git", add, config_yml)
+    sh("git", "add", config_yml)
 
     sh("git", "commit", "-m", "Update documents for #{version}")
     sh("git", "push")
