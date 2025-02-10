@@ -37,10 +37,10 @@ def generate_documents(dir)
      "override=list(destination=\"#{dir}\"))")
 end
 
-namespace :doc do
-  desc "Generate document"
+namespace :docs do
+  desc "Generate documents"
   task :generate do
-    generate_document(doc_dir)
+    generate_documents(docs_dir)
   end
 end
 
