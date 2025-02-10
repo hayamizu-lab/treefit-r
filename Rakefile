@@ -70,7 +70,7 @@ namespace :release do
     generate_documents(docs_dir)
     sh("git", "add", docs_dir)
 
-    config_yml = File.join(docs_dir, "_config.yml")
+    config_yml = "docs/_config.yml"
     config_yml_content = File.read(config_yml).gsub(/^(latest_version: ).*$/) do
       "#{$1}#{version}"
     end
