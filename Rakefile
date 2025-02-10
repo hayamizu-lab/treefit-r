@@ -91,4 +91,4 @@ namespace :release do
 end
 
 desc "Release"
-task release: ["release:docs", "tag"]
+task release: ["release:docs", "release:tag"]
