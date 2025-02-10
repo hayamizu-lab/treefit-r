@@ -1,0 +1,10 @@
+pandoc: 3.1.11.1
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  treefit: treefit.html
+  working-with-seurat: working-with-seurat.html
+last_built: 2025-02-10T01:32Z
+urls:
+  reference: https://hayamizu-lab.github.io/treefit-r/reference
+  article: https://hayamizu-lab.github.io/treefit-r/articles
