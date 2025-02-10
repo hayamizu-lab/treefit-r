@@ -19,7 +19,7 @@ def development_version?
   version.end_with?(".9000")
 end
 
-def doc_dir
+def docs_dir
   if development_version?
     "docs/dev"
   else
@@ -52,16 +52,6 @@ namespace :check do
   end
 end
 
-desc "Release"
-task :release do
-  sh("Rscript", "-e", "devtools::check()")
-  sh("Rscript", "-e", "devtools::spell_check()")
-  sh("R", "CMD", "build", ".")
-  sh("R", "CMD", "check", "treefit_#{version}.tar.gz", "--as-cran")
-  generate_document(doc_dir)
-  sh("git", "add", doc_dir)
-end
-
 namespace :cran do
   desc "Submit to CRAN"
   task :submit do
@@ -70,10 +60,35 @@ namespace :cran do
   end
 end
 
-desc "Tag"
-task :tag do
-  sh("git", "tag",
-     "-a", version,
-     "-m", "Treefit #{version}!!!")
-  sh("git", "push", "--tags")
+namespace :release do
+  desc "Release documents"
+  task :docs do
+    sh("Rscript", "-e", "devtools::check()")
+    sh("Rscript", "-e", "devtools::spell_check()")
+    sh("R", "CMD", "build", ".")
+    sh("R", "CMD", "check", "treefit_#{version}.tar.gz", "--as-cran")
+    generate_documents(docs_dir)
+    sh("git", "add", docs_dir)
+
+    config_yml = File.join(docs_dir)
+    config_yml_content = File.read(config_yml).gsub(/^(latest_version: ).*$/) do
+      "#{$1}#{version}"
+    end
+    File.write(config_yml, config_yml_content)
+    sh("git", add, config_yml)
+
+    sh("git", "commit", "-m", "Update documents for #{version}")
+    sh("git", "push")
+  end
+
+  desc "Tag"
+  task :tag do
+    sh("git", "tag",
+       "-a", version,
+       "-m", "Treefit #{version}!!!")
+    sh("git", "push", "--tags")
+  end
 end
+
+desc "Release"
+task release: ["release:docs", "tag"]

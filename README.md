@@ -77,16 +77,8 @@ Submit to CRAN:
 rake cran:submit
 ```
 
-Update document after the submission is accepted:
+Release after the submission is accepted:
 
 ```bash
 rake release
-```
-
-Update version in `docs/_config.yml`.
-
-Tag:
-
-```bash
-rake tag
 ```
