@@ -27,7 +27,7 @@ def docs_dir
   end
 end
 
-def generate_document(dir)
+def generate_documents(dir)
   rm_rf(dir)
   sh("Rscript",
      "-e",
